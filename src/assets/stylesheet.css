@@ -1,0 +1,8 @@
+@font-face {
+    font-family: "airbnb";
+    src: url("font/AirBnb_Cereal.woff") format("woff2"),
+        url("font/AirBnb_Cereal2.woff2") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

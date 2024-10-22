@@ -1,0 +1,29 @@
+.room-detail {
+    .box-booking {
+        padding: 24px;
+        width: 100%;
+        height: 450px;
+        border: 1px solid rgb(221, 221, 221);
+        border-radius: 20px;
+    }
+    .traphong {
+        @media screen and (min-width: 1141px) {
+            margin-left: 7rem;
+        }
+    }
+    .info-room {
+        @media screen and (max-width: 1140px) {
+            display: flex;
+            flex-direction: column-reverse;
+            .booking-room {
+                width: 80%;
+                margin: 0 auto;
+            }
+            .description {
+                width: 100%;
+                padding: 0 40px;
+                margin: 0 auto;
+            }
+        }
+    }
+}

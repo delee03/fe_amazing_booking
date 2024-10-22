@@ -1,0 +1,25 @@
+.customDropdownMenuFull {
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    height: 300px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+.customDropdownMenuSearching {
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    height: auto;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.customDatePicker {
+    /* Nhắm đến phần input của DatePicker */
+    :global {
+        .ant-picker-input > input::placeholder {
+            font-size: 15px;
+            font-weight: 400;
+            color: #777b93 !important; /* Thay đổi màu của placeholder */
+        }
+    }
+}

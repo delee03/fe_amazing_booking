@@ -1,0 +1,205 @@
+.main-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    padding: 10px 40px 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.min-height-box-search {
+    min-height: 260px;
+}
+
+.min-height-bar-search {
+    min-height: 80px;
+}
+
+.visible-header {
+    top: 65%;
+    left: 0;
+    z-index: 1100;
+    display: block;
+    width: 100%;
+    content: "";
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    position: absolute;
+}
+
+/* Styles for the search bar */
+.search-bar {
+    position: fixed;
+    top: 15px;
+    left: 30%;
+    // width: 30% ;
+    height: 50px;
+    padding: 10px;
+    border-radius: 999px;
+    background-color: white;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0; /* Bắt đầu với ẩn */
+    visibility: hidden; /* Ẩn đi */
+    transform: translateY(-100px); /* Di chuyển lên phía trên để tạo hiệu ứng */
+    transition: all 0.5s; /* Thời gian hiệu ứng */
+    z-index: 1000;
+}
+
+.search-bar.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Hiển thị ở vị trí bình thường */
+}
+
+.content {
+    margin-top: 320px; /* Để nội dung không bị đè lên header */
+    padding: 20px;
+}
+
+header .box-search {
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+    padding: 12px 20px;
+    font-size: 14px;
+    margin-bottom: 14px;
+    border-radius: 999px;
+}
+
+.search-item {
+    position: relative;
+    :where(.css-dev-only-do-not-override-1pg9a38).ant-picker-outlined {
+        border-width: 0px !important;
+    }
+    :where(.css-dev-only-do-not-override-1pg9a38).ant-picker {
+        padding: 0px !important;
+    }
+    :where(.css-dev-only-do-not-override-1pg9a38).ant-picker-outlined:focus,
+    :where(
+            .css-dev-only-do-not-override-1pg9a38
+        ).ant-picker-outlined:focus-within {
+        border-color: none;
+    }
+}
+
+.search-title {
+    display: block;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.search-item:hover::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 106%;
+    top: -13px;
+    left: -10px;
+    height: 167%;
+    pointer-events: none; //choh phép hover vào phần dưới lớp after
+    border-radius: 999px;
+    // z-index: 100;
+    background-color: rgba(165, 160, 160, 0.2);
+}
+
+.search-item:last-child:hover:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 110%;
+    top: -13px;
+    left: -8px;
+    pointer-events: none; //choh phép hover vào phần dưới lớp after
+    height: 160%;
+    border-radius: 999px;
+    // z-index: 100;
+    background-color: rgba(165, 160, 160, 0.2);
+}
+
+header {
+    .box-user {
+        h3 {
+            padding: 10px 15px;
+            &:hover {
+                cursor: pointer;
+                border-radius: 999px;
+                background-color: rgba(94, 92, 92, 0.1);
+            }
+        }
+        .global {
+            margin-left: -10px;
+            padding: 10px;
+            &:hover {
+                cursor: pointer;
+                border-radius: 999px;
+
+                background-color: rgba(94, 92, 92, 0.1);
+            }
+        }
+        .bar-menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+            padding: 10px 15px;
+            border-radius: 999px;
+            &:hover {
+                cursor: pointer;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            }
+        }
+    }
+}
+
+nav {
+    margin-top: 20px;
+
+    ul {
+        padding-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+        li {
+            min-height: 60px;
+            .nav-item {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                color: #565555;
+                font-size: 0.8rem;
+                font-weight: 700;
+                height: 100%;
+                justify-content: center;
+                transition: all 0.4s;
+                &:hover {
+                    cursor: pointer;
+                    color: #000;
+                    transform: translateY(-10px);
+                    &::after {
+                        content: "";
+                        display: block;
+                        width: 100%;
+                        height: 2px;
+                        top: 10px;
+                        background-color: #111111;
+                    }
+                }
+            }
+            .active {
+                cursor: pointer;
+                color: #000;
+                &::after {
+                    content: "";
+                    display: block;
+                    width: 100%;
+                    height: 2px;
+                    top: 10px;
+                    background-color: #111111;
+                }
+            }
+        }
+    }
+}

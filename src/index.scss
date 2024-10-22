@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: "Nunito", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+:where(.css-dev-only-do-not-override-1pg9a38).ant-menu-dark
+    .ant-menu-item-selected,
+:where(.css-dev-only-do-not-override-1pg9a38).ant-menu-dark
+    > .ant-menu
+    .ant-menu-item-selected {
+    background-color: #f16060 !important;
+    &:hover {
+        background-color: #d84040 !important;
+    }
+}
+
+:where(.css-dev-only-do-not-override-1pg9a38).ant-picker-dropdown
+    .ant-picker-cell-in-view.ant-picker-cell-selected:not(
+        .ant-picker-cell-disabled
+    )
+    .ant-picker-cell-inner,
+:where(.css-dev-only-do-not-override-1pg9a38).ant-picker-dropdown
+    .ant-picker-cell-in-view.ant-picker-cell-range-start:not(
+        .ant-picker-cell-disabled
+    )
+    .ant-picker-cell-inner,
+:where(.css-dev-only-do-not-override-1pg9a38).ant-picker-dropdown
+    .ant-picker-cell-in-view.ant-picker-cell-range-end:not(
+        .ant-picker-cell-disabled
+    )
+    .ant-picker-cell-inner {
+    border-radius: 50%;
+    background: #ef4444 !important;
+}
+
+:where(.css-dev-only-do-not-override-1pg9a38).ant-pagination
+    .ant-pagination-item-active
+    a {
+    color: #ef4444 !important;
+}
+
+:where(.css-dev-only-do-not-override-1pg9a38).ant-pagination
+    .ant-pagination-item-active {
+    border-color: #ef4444;
+}
+
+:where(.css-dev-only-do-not-override-1pg9a38).ant-pagination:not(
+        .ant-pagination-disabled
+    )
+    .ant-pagination-item:focus-visible {
+    outline: #f16060 !important;
+}

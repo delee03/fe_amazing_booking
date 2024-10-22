@@ -1,0 +1,10 @@
+.customDatePicker {
+    /* Nhắm đến phần input của DatePicker */
+    :global {
+        .ant-picker-input > input::placeholder {
+            font-size: 15px;
+            font-weight: 400;
+            color: #5f6272 !important; /* Thay đổi màu của placeholder */
+        }
+    }
+}
