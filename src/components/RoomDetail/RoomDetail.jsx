@@ -49,7 +49,7 @@ const RoomDetail = () => {
                     <div>
                         <div className="flex justify-between items-center gap-1 mt-6 lg:-mt-10 flex-col sm:flex-row ">
                             <h2 className="font-semibold text-2xl mt-3  lg:mt-0 md:text-2xl 2xl:text-3xl my-4">
-                                {room.tenPhong}
+                                {room.name}
                             </h2>
                             <div className="flex justify-between items-center flex-row sm:flex-col lg:flex-row ">
                                 <div className="flex justify-between items-center gap-1 hover:bg-gray-200 hover:rounded-xl px-3 py-2">
@@ -71,9 +71,9 @@ const RoomDetail = () => {
                         </div>
                         <div className=" relative h-96">
                             <img
-                                src={room.hinhAnh}
+                                src={room.avatar}
                                 className="w-full h-full object-cover rounded-2xl"
-                                alt={room.tenPhong}
+                                alt={room.name}
                             />
                             <button className=" absolute right-4 bottom-5 hover:bg-black ease-in-out  delay-100 hover:text-white flex items-center gap-2 px-3 py-1 text-lg font-semibold rounded-lg border bg-white border-gray-800">
                                 <MenuDots />
@@ -90,31 +90,31 @@ const RoomDetail = () => {
                                 </h2>
                                 <div className="block w-full lg:w-2/4 xl:w-3/5 xl:flex justify-between items-center  -mt-2">
                                     <h3 className="font-semibold text-base text-gray-600">
-                                        {room.khach} khách
+                                        {room.soKhach} khách
                                     </h3>
                                     <span className="mb-2 text-2xl font-bold text-gray-600 ">
                                         .
                                     </span>
                                     <p className="font-semibold text-base text-gray-600">
-                                        {room.giuong} giường
+                                        {room.soLuong} phòng
                                     </p>
                                     <span className="mb-2 text-2xl font-bold text-gray-600 ">
                                         .
                                     </span>
                                     <p className="font-semibold text-base text-gray-600">
-                                        {room.phongTam} phòng tắm đầy đủ
+                                        Có phòng tắm đầy đủ
                                     </p>
                                     <span className="mb-2 text-2xl font-bold text-gray-600 ">
                                         .
                                     </span>
                                     <p className="font-semibold text-base text-gray-600">
-                                        {room.phongNgu} phòng ngủ
+                                        Số phòng ngủ đáp ứng nhu cầu
                                     </p>
                                     <span className="mb-2 text-2xl font-bold text-gray-600 ">
                                         .
                                     </span>
                                     <p className="font-semibold text-base text-gray-600">
-                                        {room.dieuHoa ? "Có" : "Không"} điều hòa
+                                        Điều hòa cao cấp
                                     </p>
                                 </div>
                                 <div>
@@ -164,8 +164,8 @@ const RoomDetail = () => {
                             </div>
                             <div className="w-4/12 booking-room">
                                 <BookingRoom
-                                    soLuongKhach={room.khach}
-                                    giaTien={room.giaTien}
+                                    soLuongKhach={room.soKhach}
+                                    giaTien={room.price}
                                     paramsId={params.id}
                                 />
                             </div>

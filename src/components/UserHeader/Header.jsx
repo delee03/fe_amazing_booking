@@ -57,8 +57,8 @@ const Header = () => {
                 <div className="flex justify-between -mx-5 md:mx-2 lg:mx-4">
                     <div className="mt-3 text-red-500">
                         <Link to="/">
-                            {/* <LogoMain /> */}
-                            <AirbnbSmall width="2.5em" height="3em" />
+                            <LogoMain />
+                            {/* <AirbnbSmall width="2.5em" height="3em" /> */}
                         </Link>
                     </div>
                     <RightHeader />

@@ -3,14 +3,14 @@ import { http } from "./config";
 
 export const getRoomByLocationId = {
     getAllRoomRealEstate: () => {
-        return http.get(`/phong-thue`);
+        return http.get(`/rooms`);
     },
 
     getAllRoom: (id) => {
-        return http.get(`/phong-thue/lay-phong-theo-vi-tri?maViTri=${id}`);
+        return http.get(`/rooms/room-by-location/${id}`);
     },
     getRoomById: (id) => {
-        return http.get(`/phong-thue/${id}`);
+        return http.get(`/rooms/room-by-id/${id}`);
     },
     upLoadRoomImage: (idRoom, formData) => {
         return http.post(

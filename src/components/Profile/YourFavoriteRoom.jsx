@@ -26,7 +26,7 @@ const YourFavoriteRoom = () => {
                     <h2 className="font-bold text-3xl text-main pb-4  mb-4 text-center">
                         Danh sách phòng yêu thích của bạn
                     </h2>
-                    {roomFavorite.lenght == 0 ? (
+                    {roomFavorite.length === 0 ? (
                         <h2 className="text-3xl font-bold mt-4 text-red-500 ">
                             Bạn không có phòng yêu thích nào
                         </h2>
@@ -40,7 +40,7 @@ const YourFavoriteRoom = () => {
                                     <div className="relative w-full  h-64">
                                         <img
                                             className="w-full h-full object-cover rounded-2xl"
-                                            src={item.hinhAnh}
+                                            src={item.avatar}
                                             alt=""
                                         />
 
@@ -57,19 +57,25 @@ const YourFavoriteRoom = () => {
                                         to={`/list-room-by-location/room-detail/${item.id}`}
                                     >
                                         <h3 className="font-semibold mt-3 min-h-12">
-                                            {item.tenPhong}
+                                            {item.name}
                                         </h3>
                                         <div className="flex justify-between my-2">
                                             <span className="text-gray-600">
-                                                Số khách: {item.khach}
+                                                Số khách: {item.soKhach}
                                             </span>
-                                            <h5 className=" text-gray-600 ">
-                                                Giường đôi: {item.giuong}
+                                            <h5 className=" text-gray-600 mr-3">
+                                                Số phòng: {item.soLuong}
                                             </h5>
                                         </div>
 
                                         <h4 className="font-semibold">
-                                            {convertCurrency(item.giaTien)}
+                                            {item.price.toLocaleString(
+                                                "vi-VN",
+                                                {
+                                                    style: "currency",
+                                                    currency: "VND",
+                                                }
+                                            )}
                                             /đêm
                                         </h4>
                                     </Link>
