@@ -1,25 +1,25 @@
 import { http } from "./config";
 
 export const layViTri = {
-  //  GET
+    //  GET
 
-  getListLocation: async () => {
-    return await http.get("/vi-tri");
-  },
+    getListLocation: () => {
+        return http.get("/locations");
+    },
 
-  // DELETE
+    // DELETE
 
-  deleteLocation: (id) => {
-    return http.delete(`/vitri/${id}`);
-  },
+    deleteLocation: (id) => {
+        return http.delete(`/locations/${id}`);
+    },
 
-  // POST
-  createLocation: () => {
-    return http.post();
-  },
+    // POST
+    createLocation: () => {
+        return http.post();
+    },
 
-  // PUT
-  updateLocation: () => {
-    return http.put();
-  },
+    // PUT
+    updateLocation: () => {
+        return http.put();
+    },
 };

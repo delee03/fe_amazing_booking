@@ -9,50 +9,13 @@ import { message, Tooltip } from "antd";
 import { handleRoomFavorite } from "../../redux/roomFavoriteSlice";
 import { useMediaQuery } from "react-responsive";
 
-// const arrSymbol = [
-//     {
-//         hinhAnh: "./img/img1.png",
-//         title: "Ở trong ngôi nhà Purple Rain của Prince",
-//         owner: "Chủ nhà/Người tổ chức: Wendy và Lisa",
-//         availability: "Nhận đặt phòng từ tháng 9",
-//     },
-//     {
-//         hinhAnh: "/img/img2.png",
-//         title: "Thư giãn tại phòng khách cùng Doja",
-//         owner: "Chủ nhà/Người tổ chức: Doja Cat",
-//         availability: "Ra mắt vào tháng 10",
-//     },
-
-//     {
-//         hinhAnh: "/img/img3.png",
-//         title: "Tiệc ngủ ở Nhà búp bê Polly Pocket",
-//         owner: " Chủ nhà: Polly Pocket",
-//         availability: "Đã hết phòng",
-//     },
-//     {
-//         hinhAnh: "/img/img4.png",
-//         title: "Buổi hẹn chơi chung tại Nhà búp bê Polly Pocket",
-//         owner: "Chủ nhà/Người tổ chức: Polly Pocket",
-//         availability: "Đã hết phòng",
-//     },
-//     {
-//         hinhAnh: "/img/img7.jpeg",
-//         title: "Thăng hạng VIP cùng Kevin Hart",
-//         owner: "Chủ nhà/Người tổ chức: Kevin Hart",
-//         availability: "Đã hết phòng",
-//     },
-//     {
-//         hinhAnh: "/img/img8.jpeg",
-//         title: "Huấn luyện tại dinh thự X-Mansion",
-//         owner: "Chủ nhà/Người tổ chức: Jubilee",
-//         availability: "Đã hết phòng",
-//     },
-// ];
 const ListRoomLocation = () => {
     const valueSearch = useSelector((state) => state.viTriReducer.valueSearch);
     const [searchParam, setSearchParam] = useSearchParams();
     const [loading, setLoading] = useState(true);
+
     let idLocation = searchParam.get("idLocation");
+    console.log(idLocation);
     const [rooms, setRooms] = useState([]);
     const dispatch = useDispatch();
     const roomLiked = useSelector(
@@ -192,7 +155,7 @@ const ListRoomLocation = () => {
                                         <div className="relative w-full  h-64">
                                             <img
                                                 className="w-full h-full object-cover rounded-2xl"
-                                                src={item.hinhAnh}
+                                                src={item.avatar}
                                                 alt=""
                                             />
                                             <Tooltip
@@ -232,20 +195,20 @@ const ListRoomLocation = () => {
                                         </div>
                                         <Link to={`room-detail/${item.id}`}>
                                             <h3 className="font-semibold mt-3 min-h-12">
-                                                {item.tenPhong}
+                                                {item.name}
                                             </h3>
                                             <div className="flex justify-between my-2">
                                                 <span className="text-gray-600">
-                                                    Số khách: {item.khach}
+                                                    Số khách: {item.soKhach}
                                                 </span>
-                                                <h5 className=" text-gray-600 ">
-                                                    Giường đôi: {item.giuong}
+                                                <h5 className=" text-gray-600 mr-3 ">
+                                                    Số phòng: {item.soLuong}
                                                 </h5>
                                             </div>
 
                                             <h4 className="font-semibold">
-                                                {convertCurrency(item.giaTien)}
-                                                /đêm
+                                                {item.price.toLocaleString()}{" "}
+                                                VNĐ /đêm
                                             </h4>
                                         </Link>
                                     </div>

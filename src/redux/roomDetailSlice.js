@@ -9,7 +9,7 @@ export const fetchAllRooms = createAsyncThunk(
     async (_, thunkApi) => {
         const response = await getRoomByLocationId.getAllRoomRealEstate();
         console.log(response);
-        return response.data.content;
+        return response.data;
     }
 );
 
@@ -18,7 +18,7 @@ export const fetchRoomById = createAsyncThunk(
     async (roomId, thunkApi) => {
         const response = await getRoomByLocationId.getRoomById(roomId);
         console.log(response);
-        return response.data.content;
+        return response.data;
     }
 );
 
