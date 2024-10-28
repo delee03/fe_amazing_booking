@@ -15,6 +15,7 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
     // };
     const navigate = useNavigate();
 
+    console.log(giaTien, paramsId, soLuongKhach);
     const user = getLocalStorage("user");
 
     // console.log(user);
@@ -127,7 +128,7 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
             {loading && <SpinnerCustom />}
             <div className="shadow shadow-gray-900/20 box-booking">
                 <h2 className="text-xl font-semibold">
-                    {convertCurrency(giaTien, "VND")}
+                    {convertCurrency(giaTien)}
                     <span className="text-base">/ đêm</span>
                 </h2>
 
@@ -189,6 +190,17 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
                                 onClick={() => {
                                     if (soKhachChon < soLuongKhach) {
                                         setSoKhachChon(soKhachChon + 1);
+                                        if (soKhachChon + 1 === soLuongKhach) {
+                                            message.warning({
+                                                content: (
+                                                    <span className="font-semibold text-base">
+                                                        Số khách tối đa là{" "}
+                                                        {soLuongKhach}
+                                                    </span>
+                                                ),
+                                                duration: 2,
+                                            });
+                                        }
                                     }
                                 }}
                                 className="border-gray-900 border px-3 py-1 delay-75 hover:bg-black hover:text-white text-center rounded-full"
@@ -218,7 +230,7 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
                             giaTien
                         )} x ${soNgay} đêm  `}</span>
                         <span className="font-semibold">
-                            {convertCurrency(giaTien * soNgay, "VND")}
+                            {convertCurrency(giaTien * soNgay)}
                         </span>
                     </div>
                     <p>Cho chỗ ở này tại AirBnb</p>

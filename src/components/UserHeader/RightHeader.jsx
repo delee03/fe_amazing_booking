@@ -110,7 +110,7 @@ const RightHeader = () => {
                 <MediaQuery minWidth={1090}>
                     {" "}
                     <h3 className="text-sm font-semibold text-gray-900">
-                        Cho thuê chỗ ở qua AirBnb
+                        Cho thuê chỗ ở qua Amazing
                     </h3>
                 </MediaQuery>
                 <MediaQuery minWidth={550}>

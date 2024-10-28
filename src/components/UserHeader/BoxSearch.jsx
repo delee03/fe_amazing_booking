@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SearchIcon } from "../../Icon/IconStorage";
+import { IconLocation, SearchIcon } from "../../Icon/IconStorage";
 import { layViTri } from "../../service/getLocationSearch";
 import { useDebounce } from "../../hooks/UseDebounce";
 import { setdsViTri, updateValueSearch } from "../../redux/viTriSlice";
@@ -58,7 +58,6 @@ const BoxSearch = () => {
             filterItems = [...dsViTri].filter((item) =>
                 removeVietnameseTones(item.city)
                     .toLowerCase()
-                    .trim()
                     .includes(
                         removeVietnameseTones(debounce).toLowerCase().trim()
                     )
@@ -87,6 +86,9 @@ const BoxSearch = () => {
               alt=""
               className="w-12 h-12 object-cover rounded-lg"
             /> */}
+                        <div className="w-12 h-6 object-cover rounded-lg">
+                            <IconLocation />
+                        </div>
                         <h3>
                             {item.city} - {item.country}
                         </h3>

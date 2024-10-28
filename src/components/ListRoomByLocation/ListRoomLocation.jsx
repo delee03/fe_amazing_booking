@@ -59,7 +59,7 @@ const ListRoomLocation = () => {
             message.warning({
                 content: (
                     <span className="font-semibold text-base">
-                        Đã bỏ phòng khỏi danh sách yêu thích của bạn
+                        Đã xóa phòng khỏi danh sách yêu thích của bạn
                     </span>
                 ),
                 duration: 2,
@@ -207,8 +207,8 @@ const ListRoomLocation = () => {
                                             </div>
 
                                             <h4 className="font-semibold">
-                                                {item.price.toLocaleString()}{" "}
-                                                VNĐ /đêm
+                                                {convertCurrency(item.price)} /
+                                                đêm
                                             </h4>
                                         </Link>
                                     </div>

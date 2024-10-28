@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { DatePicker, Dropdown, Space } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { SearchIcon } from "../../Icon/IconStorage";
+import { IconLocation, SearchIcon } from "../../Icon/IconStorage";
 import { setdsViTri, updateValueSearch } from "../../redux/viTriSlice";
 import { layViTri } from "../../service/getLocationSearch";
 import { useDebounce } from "../../hooks/UseDebounce";
@@ -85,6 +85,9 @@ const BarSearch = ({ show }) => {
               alt=""
               className="w-12 h-12 object-cover rounded-lg"
             /> */}
+                        <div className="w-12 h-6 object-cover rounded-lg">
+                            <IconLocation />
+                        </div>
                         <h3>
                             {item.city} - {item.country}
                         </h3>
