@@ -3,8 +3,10 @@ import { SvgFacebook, SvgGoogle, SvgApple, SvgEmail } from "./IconSignUp.jsx";
 import InputCustom from "../../components/Custom/InputCustom";
 import axios from "axios";
 import { http } from "../../service/config.js";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Input, message } from "antd";
 import { authService } from "../../service/auth.service.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { setLocalStorage } from "../../utils/localStorage.js";
@@ -43,7 +45,13 @@ const SignIn = () => {
                 .string()
                 .email("Email không hợp lệ")
                 .required("Không được bỏ trống email"),
-            password: yup.string().required("Không được bỏ trống password"),
+            password: yup
+                .string()
+                .required("Không được bỏ trống password")
+                .matches(
+                    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,12}$/,
+                    "Password gồm 6-12 ký tự, ít nhất 1 chữ hoa, 1 số và 1 ký tự đặc biệt"
+                ),
         }),
         onSubmit: (values) => {
             console.log(values);
@@ -53,16 +61,26 @@ const SignIn = () => {
                     setLocalStorage("user", res.data.content.user);
                     setLocalStorage("role", res.data.content.user.role);
                     setLocalStorage("token", res.data.content.token); //check role user or admin từ token
-
+                    message.success("Đăng nhập thành công", 2);
                     navigate("/");
                     console.log(res);
                 })
-                .catch((err) => {});
+                .catch((err) => {
+                    console.log(err);
+                    message.error("Đăng nhập thất bại");
+                });
         },
     });
 
-    const { handleSubmit, values, handleBlur, handleChange, touched, errors } =
-        formik;
+    const {
+        handleSubmit,
+        values,
+        handleBlur,
+        handleChange,
+        touched,
+        errors,
+        setFieldValue,
+    } = formik;
 
     return (
         <section className="">
@@ -108,18 +126,7 @@ const SignIn = () => {
 
                         {/* Password Input */}
 
-                        {/* <input
-            placeholder="mat khau"
-            type="password"
-            id="password"
-            value={value.password}
-            onChange={(e) => {
-              const id = e.target.id;
-              console.log(e.target.value);
-              setValue({ ...value, [id]: e.target.value });
-            }}
-          /> */}
-                        <InputCustom
+                        {/* <InputCustom
                             id={"password"}
                             label={"Password"}
                             name={"password"}
@@ -128,16 +135,46 @@ const SignIn = () => {
                             error={errors.password}
                             onBlur={handleBlur}
                             placehoder={"Vui lòng nhập password"}
-                        />
+                        /> */}
+                        <div className="mb-2">
+                            <label className="block mb-2 ml-1 text-sm font-medium text-gray-900">
+                                Mật khẩu
+                            </label>
+                            <Input.Password
+                                className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full px-2.5 py-2"
+                                placeholder="Vui lòng nhập password"
+                                name="password"
+                                onChange={(event) => {
+                                    setFieldValue(
+                                        "password",
+                                        event.target.value
+                                    );
+                                }}
+                                onBlur={handleBlur}
+                                value={values.password ? values.password : ""}
+                                iconRender={(visible) =>
+                                    visible ? (
+                                        <EyeTwoTone />
+                                    ) : (
+                                        <EyeInvisibleOutlined />
+                                    )
+                                }
+                            />
+                            {touched.password && errors.password ? (
+                                <p className="text-red-500 py-2">
+                                    {errors.password}
+                                </p>
+                            ) : null}
+                        </div>
 
                         <p className="text-sm text-black mt-2 mb-2">
                             Bấm vào để
-                            <a
-                                href="#"
+                            <Link
+                                to="/sign-up"
                                 className="text-black font-semibold ml-1 underline"
                             >
                                 Đăng ký
-                            </a>
+                            </Link>
                         </p>
                         {/* SignIn Button */}
                         <button

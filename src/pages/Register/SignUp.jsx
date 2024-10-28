@@ -1,6 +1,7 @@
 import React from "react";
 import InputCustom from "../../components/Custom/InputCustom";
-import { DatePicker } from "antd";
+import { DatePicker, Input, message } from "antd";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import ButtonCustom from "../../components/Custom/ButtonCustom";
 import {
     SvgApple,
@@ -15,7 +16,7 @@ import * as yup from "yup";
 import { authService } from "../../service/auth.service";
 import { setLocalStorage } from "../../utils/localStorage";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -25,8 +26,9 @@ const SignUp = () => {
             name: "",
             phone: "",
             password: "",
-            gender: "",
+            gender: true,
             birthday: "",
+            role: "USER",
         },
         validationSchema: yup.object({
             name: yup.string().required("Không được bỏ trống họ tên"),
@@ -41,7 +43,13 @@ const SignUp = () => {
                     "Vui lòng nhập đúng sdt Việt Nam"
                 )
                 .required("Vui lòng nhập đúng SDT Việt Nam"),
-            password: yup.string().required("Không được bỏ trống password"),
+            password: yup
+                .string()
+                .required("Không được bỏ trống password")
+                .matches(
+                    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,12}$/,
+                    "Password gồm 6-12 ký tự, ít nhất 1 chữ hoa, 1 số và 1 ký tự đặc biệt"
+                ),
             gender: yup.boolean().required("vui lòng chọn giới tính"),
             birthday: yup.string().required("Vui lòng chọn ngày sinh"),
         }),
@@ -51,12 +59,13 @@ const SignUp = () => {
                 .signUp(values)
                 .then((res) => {
                     console.log(res);
-                    alert("Đăng kí thành công hãy đăng nhập");
+                    message.success("Đăng ký thành công ", 2);
                     navigate("/sign-in");
 
                     // setLocalStorage("registerUser", res.data.content);
                 })
                 .catch((err) => {
+                    message.error(`Đăng ký thất bại ${err}`);
                     console.log(err);
                 });
         },
@@ -109,7 +118,7 @@ const SignUp = () => {
                             placehoder={"Vui lòng nhập Email"}
                             typeInput=""
                         />
-
+                        {/* 
                         <InputCustom
                             label={"Mật Khẩu"}
                             name={"password"}
@@ -120,7 +129,37 @@ const SignUp = () => {
                             value={values.password}
                             placehoder={"Vui lòng nhập mật khẩu"}
                             typeInput="password"
-                        />
+                        /> */}
+                        <div className="mb-2">
+                            <label className="block mb-2 ml-1 text-sm font-medium text-gray-900">
+                                Mật khẩu
+                            </label>
+                            <Input.Password
+                                className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full px-2.5 py-2"
+                                placeholder="Vui lòng nhập password"
+                                name="password"
+                                onChange={(event) => {
+                                    setFieldValue(
+                                        "password",
+                                        event.target.value
+                                    );
+                                }}
+                                onBlur={handleBlur}
+                                value={values.password ? values.password : ""}
+                                iconRender={(visible) =>
+                                    visible ? (
+                                        <EyeTwoTone />
+                                    ) : (
+                                        <EyeInvisibleOutlined />
+                                    )
+                                }
+                            />
+                            {touched.password && errors.password ? (
+                                <p className="text-red-500 py-2">
+                                    {errors.password}
+                                </p>
+                            ) : null}
+                        </div>
                         <InputCustom
                             placehoder={"Vui lòng nhập sdt"}
                             label={"Số điện thoại"}
@@ -179,7 +218,7 @@ const SignUp = () => {
                                     className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full px-2.5 py-2"
                                     onChange={(date, dateString) => {
                                         console.log(dateString);
-                                        values.birthday = dateString || "";
+                                        // values.birthday = dateString || "";
                                         setFieldValue(
                                             "birthday",
                                             dateString || ""
@@ -206,6 +245,17 @@ const SignUp = () => {
                                 OR
                             </span>
                             <div className="w-full h-0 bg-black border border-black ml-2"></div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <h2 className="mx-auto">
+                                Đã có tài khoản ?{" "}
+                                <Link
+                                    className="text-red-500 hover:text-red-800"
+                                    to="/sign-in"
+                                >
+                                    Đăng nhập
+                                </Link>
+                            </h2>
                         </div>
                         <div className="flex justify-around mt-4 w-4/6 gap-6 mx-auto">
                             <button className="flex justify-around items-center w-full py-2 px-4 duration-300 font-semibold hover:bg-black hover:text-white tran bg-white border border-gray-400 rounded-lg">

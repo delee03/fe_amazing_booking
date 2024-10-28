@@ -1,4 +1,5 @@
-import React from "react";
+import { Skeleton } from "antd";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 const HomePage = () => {
@@ -135,65 +136,77 @@ const HomePage = () => {
         },
     ];
 
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 2000);
+        return () => clearTimeout(timer);
+    }, [loading]);
+
     return (
         <>
-            <section>
-                <div className="container sm:container  lg:container  2xl:container">
-                    <div
-                        className={`grid grid-cols-1 ${
-                            isMobile && "px-7"
-                        } md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-x-3 gap-y-4 md:gap-x-8 md:gap-y-14   xl:gap-x-6 xl:gap-y-14  `}
-                    >
-                        {arrSymbol.map((item, index) => (
-                            <div
-                                key={index}
-                                className="max-h-80 mb-16 mt-6 md:mt-0"
-                            >
-                                <img
-                                    className="w-full h-full object-cover rounded-2xl"
-                                    src={item.hinhAnh}
-                                    alt=""
-                                />
-                                <h3 className="font-semibold mt-3">
-                                    {item.title}
-                                </h3>
-                                <h4>{item.owner}</h4>
-                                <h5 className="font-semibold ">
-                                    {item.availability}
-                                </h5>
-                            </div>
-                        ))}
+            {loading ? (
+                <Skeleton active className="!h-screen" />
+            ) : (
+                <section>
+                    <div className="container sm:container   lg:container  2xl:container">
+                        <div
+                            className={`grid grid-cols-1 ${
+                                isMobile && "px-7"
+                            } md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-x-3 gap-y-4 md:gap-x-8 md:gap-y-14   xl:gap-x-6 xl:gap-y-14  `}
+                        >
+                            {arrSymbol.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="max-h-80 mb-16 mt-6 md:mt-0"
+                                >
+                                    <img
+                                        className="w-full h-full object-cover rounded-2xl"
+                                        src={item.hinhAnh}
+                                        alt=""
+                                    />
+                                    <h3 className="font-semibold mt-3">
+                                        {item.title}
+                                    </h3>
+                                    <h4>{item.owner}</h4>
+                                    <h5 className="font-semibold ">
+                                        {item.availability}
+                                    </h5>
+                                </div>
+                            ))}
+                        </div>
+                        <h2 className="text-3xl mt-16 font-semibold">
+                            Trải nghiệm đã qua
+                        </h2>
+                        <div
+                            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
+                                isMobile && "px-7"
+                            }  gap-x-3 gap-y-4 md:gap-x-8 md:gap-y-14  xl:gap-x-6 xl:gap-y-14  mt-4`}
+                        >
+                            {pastExperience.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="max-h-80 mb-20 mt-6 md:mt-0"
+                                >
+                                    <img
+                                        className="w-full h-full object-cover rounded-2xl"
+                                        src={item.hinhAnh}
+                                        alt=""
+                                    />
+                                    <h3 className="font-semibold mt-3 ">
+                                        {item.title}
+                                    </h3>
+                                    <h4>{item.owner}</h4>
+                                    <h5 className="font-semibold ">
+                                        {item.availability}
+                                    </h5>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                    <h2 className="text-3xl mt-16 font-semibold">
-                        Trải nghiệm đã qua
-                    </h2>
-                    <div
-                        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
-                            isMobile && "px-7"
-                        }  gap-x-3 gap-y-4 md:gap-x-8 md:gap-y-14  xl:gap-x-6 xl:gap-y-14  mt-4`}
-                    >
-                        {pastExperience.map((item, index) => (
-                            <div
-                                key={index}
-                                className="max-h-80 mb-20 mt-6 md:mt-0"
-                            >
-                                <img
-                                    className="w-full h-full object-cover rounded-2xl"
-                                    src={item.hinhAnh}
-                                    alt=""
-                                />
-                                <h3 className="font-semibold mt-3 ">
-                                    {item.title}
-                                </h3>
-                                <h4>{item.owner}</h4>
-                                <h5 className="font-semibold ">
-                                    {item.availability}
-                                </h5>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+                </section>
+            )}
         </>
     );
 };

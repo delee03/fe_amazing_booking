@@ -18,7 +18,7 @@ const UserLayout = () => {
             ? "mt-56"
             : "mt-24";
     const marginTopForOutlet = isDesktop
-        ? "mt-56"
+        ? "mt-64"
         : isTablet
         ? "mt-56"
         : "mt-24";
