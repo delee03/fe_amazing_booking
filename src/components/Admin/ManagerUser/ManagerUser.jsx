@@ -12,10 +12,13 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 
 const ManagerUser = () => {
+    const { listNguoiDung } = useSelector((state) => state.nguoiDungSlice);
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [typeButton, setTypeButton] = useState(null);
     const [userUpdate, setUserUpdate] = useState({});
+    const [valueSearch, setValueSearch] = useState("");
+    const [filteredData, setFilteredData] = useState([listNguoiDung]);
     const showLoading = () => {
         setOpen(true);
         setLoading(true);
@@ -27,7 +30,7 @@ const ManagerUser = () => {
     };
 
     const dispatch = useDispatch();
-    const { listNguoiDung } = useSelector((state) => state.nguoiDungSlice);
+
     // console.log(listNguoiDung);
 
     useEffect(() => {
@@ -60,6 +63,22 @@ const ManagerUser = () => {
             setLoading(false);
         }, 300);
     };
+
+    const handleSearch = (e) => {
+        setValueSearch(e.target.value);
+        console.log(e.target.value);
+    };
+    // State để lưu trữ danh sách người dùng sau khi lọc
+    useEffect(() => {
+        // Lọc danh sách người dùng dựa trên tên
+        const filteredList = listNguoiDung.filter((user) =>
+            user.name
+                .toLowerCase()
+                .trim()
+                .includes(valueSearch.toLowerCase().trim())
+        );
+        setFilteredData(filteredList);
+    }, [valueSearch, listNguoiDung]);
 
     const addUserSchema = yup.object({
         name: yup.string().required("Không được bỏ trống họ tên"),
@@ -247,15 +266,24 @@ const ManagerUser = () => {
             <h1 className="text-center text-4xl mb-5 font-semibold text-main">
                 Quản lí người dùng
             </h1>
-            <Button
-                className="bg-sky-500 mb-4  text-white"
-                onClick={() => {
-                    showLoading();
-                    setTypeButton("add");
-                }}
-            >
-                Thêm quản trị
-            </Button>
+            <div className="flex justify-between items-center">
+                <Button
+                    className="bg-sky-500 mb-4  text-white"
+                    onClick={() => {
+                        showLoading();
+                        setTypeButton("add");
+                    }}
+                >
+                    Thêm quản trị
+                </Button>
+                <input
+                    className="py-3 px-8 rounded-lg border border-spacing-1 "
+                    placeholder="Tìm kiếm tên người dùng"
+                    value={valueSearch}
+                    onChange={handleSearch}
+                    style={{ marginBottom: 16 }}
+                />
+            </div>
 
             {typeButton == "add" ? (
                 <Modal
@@ -557,7 +585,7 @@ const ManagerUser = () => {
             )}
 
             <div>
-                <Table columns={columns} dataSource={listNguoiDung}></Table>
+                <Table columns={columns} dataSource={filteredData}></Table>
             </div>
         </>
     );

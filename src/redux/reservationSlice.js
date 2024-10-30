@@ -10,7 +10,26 @@ export const fetchAllBookings = createAsyncThunk(
     }
 );
 
+export const fetchUpdateBooking = createAsyncThunk(
+    "bookings/fetchUpdateBooking",
+    async ({ id, data }, thunkApi) => {
+        const response = await booking.update(id, data);
+        console.log(response);
+        return response.data.content;
+    }
+);
+
+export const fetchDeleteBooking = createAsyncThunk(
+    "bookings/fetchDeleteBooking",
+    async (id, thunkApi) => {
+        const response = await booking.delete(id);
+        console.log(response);
+        return response.data.content;
+    }
+);
+
 const initialState = {
+    bookingUpdate: {},
     arrReservation: [],
     arrRoomById: [],
     arrAllBooking: [],
@@ -38,6 +57,16 @@ const reservationSlice = createSlice({
             state.arrAllBooking = action.payload;
             // console.log(action);
         });
+        builder.addCase(fetchUpdateBooking.fulfilled, (state, action) => {
+            state.bookingUpdate = action.payload;
+            // console.log(action);
+        });
+        builder.addCase(fetchDeleteBooking.fulfilled, (state, action) => {
+            state.arrAllBooking = state.arrAllBooking.filter(
+                (booking) => booking.id !== action.payload.id
+            );
+        });
+        // console.log(action);
     },
 });
 
