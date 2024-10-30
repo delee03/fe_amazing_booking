@@ -29,6 +29,9 @@ const AdminTemplate = () => {
                     "Bạn không có quyền truy cập vào trang này nhé",
                     3
                 );
+                localStorage.removeItem("user");
+                localStorage.removeItem("token");
+
                 setTimeout(() => {
                     // window.location.href = "/admin-login";
                     navigate("/admin-login");

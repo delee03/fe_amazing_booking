@@ -10,6 +10,8 @@ import * as yup from "yup";
 import { setLocalStorage } from "../../utils/localStorage";
 import { HandleAuth } from "../Auth/HandleAuth.jsx";
 import { message } from "antd";
+import { useDispatch } from "react-redux";
+import { updateInfoUser } from "../../redux/authSlice.js";
 
 const AdminLogin = () => {
     // const [data, setData] = useState([]);
@@ -34,11 +36,8 @@ const AdminLogin = () => {
     // };
 
     const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     localStorage.removeItem("user");
-    //     localStorage.removeItem("token");
-    // }, []);
+    const dispatch = useDispatch();
+    // useEffect(() => {}, []);
 
     const formik = useFormik({
         initialValues: {
@@ -63,6 +62,7 @@ const AdminLogin = () => {
                     const checkPermission = HandleAuth();
                     if (checkPermission) {
                         message.success("Chào mừng admin đã quay trở lại", 2);
+                        dispatch(updateInfoUser(res.data.content.user));
                         setTimeout(() => {
                             navigate("/admin");
                         }, 1000);
@@ -74,13 +74,31 @@ const AdminLogin = () => {
                     }
                 })
                 .catch((err) => {
-                    console.log("Có lỗi đăng nhập rồi IT ơi", err);
+                    if (
+                        err.response.status === 401 ||
+                        err.response.status === 403
+                    ) {
+                        message.error(
+                            "Không tồn tại email và password trong hệ thống, hãy đăng nhập lại nhé",
+                            2
+                        );
+                        navigate("/sign-in");
+                    } else {
+                        message.error("Có lỗi xảy ra, vui lòng thử lại sau");
+                    }
                 });
         },
     });
 
-    const { handleSubmit, values, handleBlur, handleChange, touched, errors } =
-        formik;
+    const {
+        handleSubmit,
+        values,
+        handleBlur,
+        handleChange,
+        onBlur,
+        touched,
+        errors,
+    } = formik;
 
     return (
         <section className="">
@@ -120,6 +138,7 @@ const AdminLogin = () => {
                             onChange={handleChange}
                             value={values.email}
                             error={errors.email}
+                            touched={touched.email}
                             onBlur={handleBlur}
                             placehoder={"Vui lòng nhập email"}
                         />
@@ -139,29 +158,22 @@ const AdminLogin = () => {
           /> */}
                         <InputCustom
                             id={"password"}
+                            typeInput="password"
                             label={"Password"}
                             name={"password"}
                             onChange={handleChange}
                             value={values.password}
+                            touched={touched.password}
                             error={errors.password}
                             onBlur={handleBlur}
                             placehoder={"Vui lòng nhập password"}
                         />
 
-                        <p className="text-sm text-black mt-2 mb-2">
-                            Bấm vào để
-                            <a
-                                href="#"
-                                className="text-black font-semibold ml-1 underline"
-                            >
-                                Đăng ký
-                            </a>
-                        </p>
                         {/* AdminLogin Button */}
                         <button
                             onClick={handleSubmit}
                             type="submit"
-                            className="w-full bg-main text-white font-semibold py-2 rounded-md mb-6 hover:bg-red-500"
+                            className=" mt-3 w-full bg-main text-white font-semibold py-2 rounded-md mb-6 hover:bg-red-500"
                         >
                             Đăng nhập
                         </button>

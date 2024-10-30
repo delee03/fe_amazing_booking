@@ -2,11 +2,13 @@ import { Dropdown, Tag } from "antd";
 import React from "react";
 import { useSelector } from "react-redux";
 import { getLocalStorage } from "../../utils/localStorage";
+import { useNavigate } from "react-router-dom";
 
 const HeaderAdmin = () => {
     const user = useSelector((state) => state.authSlice.infoUser);
+    const navigate = useNavigate();
     console.log(user);
-    const adminInfo = getLocalStorage("adminInfo");
+    // const adminInfo = getLocalStorage("adminInfo");
 
     const items = [
         {
@@ -23,6 +25,22 @@ const HeaderAdmin = () => {
                     <div className="py-2 px-3">Phone: {user.phone}</div>
                     <div className="py-2 px-3">
                         Role: {user.role ? "ADMIN" : ""}
+                    </div>
+                    <div>
+                        <button
+                            className="bg-red-500 w-full text-white py-2 px-3 rounded-md"
+                            onClick={() => {
+                                navigate("/");
+                                localStorage.removeItem("user");
+                                localStorage.removeItem("token");
+                                localStorage.removeItem("role");
+                                localStorage.getItem("adminInfo")
+                                    ? localStorage.removeItem("adminInfo")
+                                    : "";
+                            }}
+                        >
+                            Đăng xuất
+                        </button>
                     </div>
                 </div>
             ),

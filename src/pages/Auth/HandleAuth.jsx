@@ -18,6 +18,8 @@ export const HandleAuth = () => {
             setLocalStorage("adminInfo", decoded);
             return true; // Nếu role là ADMIN, cho phép truy cập
         } else {
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
             return false; // Ngược lại, không cho phép
         }
     } catch (error) {

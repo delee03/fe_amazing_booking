@@ -18,6 +18,8 @@ import { setLocalStorage } from "../../utils/localStorage";
 import dayjs from "dayjs";
 import { Link, useNavigate } from "react-router-dom";
 
+import SignInGoogle from "../SignIn/SignInWGoogle";
+
 const SignUp = () => {
     const navigate = useNavigate();
     const formik = useFormik({
@@ -257,13 +259,13 @@ const SignUp = () => {
                                 </Link>
                             </h2>
                         </div>
-                        <div className="flex justify-around mt-4 w-4/6 gap-6 mx-auto">
-                            <button className="flex justify-around items-center w-full py-2 px-4 duration-300 font-semibold hover:bg-black hover:text-white tran bg-white border border-gray-400 rounded-lg">
-                                <span className="w-5 h-5">
+                        <div className="flex justify-around mt-4 w-6/6 gap-6 mx-auto">
+                            <div className="flex justify-around items-center w-full py-2 px-4 duration-300 font-semibold hover:bg-black hover:text-white tran bg-white border border-gray-400 rounded-lg">
+                                {/* <span className="w-5 h-5">
                                     <SvgGoogle />
-                                </span>
-                                <p>Google</p>
-                            </button>
+                                </span> */}
+                                <SignInGoogle />
+                            </div>
                             <button className="flex justify-between items-center w-full py-2 px-4 duration-300 font-semibold hover:bg-black hover:text-white bg-white border border-gray-400 rounded-lg">
                                 <span className="w-5 h-5">
                                     <SvgFacebook />

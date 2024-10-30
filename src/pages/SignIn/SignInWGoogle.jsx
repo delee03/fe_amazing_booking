@@ -4,11 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { setLocalStorage } from "../../utils/localStorage";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { message } from "antd";
+import { useDispatch } from "react-redux";
+import { updateInfoUser } from "../../redux/authSlice";
 
 // import jwt_decode from "jwt-decode";
 
 const SignInGoogle = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLoginSuccess = async (response) => {
         try {
@@ -24,9 +28,12 @@ const SignInGoogle = () => {
 
             // Xử lý phản hồi từ backend và lưu vào localStorage
             const { user, token } = res.data.content;
+            dispatch(updateInfoUser(user));
+            console.log(res);
             setLocalStorage("user", user);
             setLocalStorage("token", token);
 
+            message.success("Đăng nhập thành công", 3);
             // Điều hướng đến trang chủ
             navigate("/");
         } catch (error) {
