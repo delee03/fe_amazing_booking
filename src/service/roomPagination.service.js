@@ -2,11 +2,13 @@ import { http } from "./config";
 
 export const roomPagination = {
     getRoomPagination: (index, size) => {
-        return http.get(`/phong-thue/phan-trang-tim-kiem`, {
+        return http.get(`/rooms/room-pagination?`, {
             params: {
                 pageIndex: index,
-                pageSize: size,
+                pageTake: size,
             },
         });
     },
 };
+
+//return http.get(`/rooms/room-pagination?pageIndex=${index}&pageTake=${size}`);

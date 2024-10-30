@@ -19,6 +19,7 @@ import { getRoomByLocationId } from "../../../service/getRoomByLocationId";
 import InputCustom from "../../Custom/InputCustom";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { IconLocation } from "../../../Icon/IconStorage";
 
 const ManageRoom = () => {
     const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const ManageRoom = () => {
         layViTri
             .getListLocation()
             .then((res) => {
-                const data = res.data.content;
+                const data = res.data;
                 // console.log(data);
                 dispatch(setdsViTri(data));
             })
@@ -73,7 +74,7 @@ const ManageRoom = () => {
                 .then((res) => {
                     // console.log(res.data.content.data);
                     // console.log(total);
-                    setRooms(res.data.content.data); // Giả sử API trả về phần `content` là danh sách phòng
+                    setRooms(res.data.content); // Giả sử API trả về phần `content` là danh sách phòng
                     setTotal(res.data.totalCount); // Giả sử API trả về phần `total` là tổng số phần tử
                 })
                 .catch((err) => {
@@ -115,13 +116,11 @@ const ManageRoom = () => {
                             }}
                             className="flex items-center justify-between gap-2 h-full px-2 py-4 rounded-lg w-full"
                         >
-                            <img
-                                src={item.hinhAnh}
-                                alt=""
-                                className="w-12 h-12 object-cover rounded-lg"
-                            />
+                            <div className="w-12 h-6 object-cover rounded-lg">
+                                <IconLocation />
+                            </div>
                             <h3>
-                                {item.tenViTri} - {item.tinhThanh}
+                                {item.city} - {item.country}
                             </h3>
                         </Link>
                     ),
@@ -148,13 +147,13 @@ const ManageRoom = () => {
                             onClick={() => {
                                 console.log(item.id);
 
-                                setFieldValue("maViTri", item.id);
-                                console.log(values.maViTri);
+                                setFieldValue("locationId", item.id);
+                                console.log(values.locationId);
                             }}
                             className="flex items-center justify-between gap-2 h-full px-2 py-4 rounded-lg w-full"
                         >
                             <h3>
-                                {item.tenViTri} - {item.tinhThanh}
+                                {item.city} - {item.country}
                             </h3>
                         </div>
                     ),
@@ -166,112 +165,57 @@ const ManageRoom = () => {
     }, [dsViTri, roomUpdate]);
 
     const validateCreate = yup.object({
-        tenPhong: yup.string().required("Không được bỏ trống họ tên"),
-        khach: yup
+        name: yup.string().required("Không được bỏ trống họ tên"),
+        soKhach: yup
             .number()
             .min(0, "Số lượng khách phải là số không âm")
             .notOneOf([0], "Số lượng khách phải khác 0"),
-        phongNgu: yup
+        soLuong: yup
             .number()
             .min(0, "Số phòng ngủ phải là số không âm")
             .notOneOf([0], "Số phòng ngủ  phải khác 0"),
-        giuong: yup
-            .number()
-            .min(0, "Số lượng giường phải là số không âm")
-            .notOneOf([0], "Số lượng giường phải khác 0"),
-        giaTien: yup
+
+        price: yup
             .number()
             .min(0, "Giá tiền phải là số không âm")
             .notOneOf([0], "Giá tiền phải khác 0"),
 
-        phongTam: yup
-            .number()
-            .min(0, "Phòng tắm phải là số không âm")
-            .notOneOf([0], "Phòng tắm phải khác 0"),
-        dieuHoa: yup
-            .boolean("Phải là true or false nhé")
-            .required("Điều hòa không được bỏ trống"),
+        tienNghi: yup.string().required("Không được bỏ trống tiện ích phòng"),
 
-        tivi: yup
-            .boolean("Phải là true or false nhé")
-            .required("Tivi không được bỏ trống"),
-        hoBoi: yup
-            .boolean("Phải là true or false nhé")
-            .required("Hồ bơi không được bỏ trống"),
-        doXe: yup
-            .boolean("Phải là true or false nhé")
-            .required("Đỗ xe không được bỏ trống"),
-        mayGiat: yup
-            .boolean("Phải là true or false nhé")
-            .required("Máy giặt không được bỏ trống"),
-
-        wifi: yup.boolean().required("Wifi không được bỏ trống"),
-        moTa: yup.string().required("Không được bỏ trống mô tả"),
+        description: yup.string().required("Không được bỏ trống mô tả"),
     });
 
     const validateUpdate = yup.object({
-        tenPhong: yup.string().required("Không được bỏ trống họ tên"),
-        khach: yup
+        name: yup.string().required("Không được bỏ trống họ tên"),
+        soKhach: yup
             .number()
             .min(0, "Số lượng khách phải là số không âm")
             .notOneOf([0], "Số lượng khách phải khác 0"),
-        phongNgu: yup
+        soLuong: yup
             .number()
             .min(0, "Số phòng ngủ phải là số không âm")
             .notOneOf([0], "Số phòng ngủ  phải khác 0"),
-        giuong: yup
-            .number()
-            .min(0, "Số lượng giường phải là số không âm")
-            .notOneOf([0], "Số lượng giường phải khác 0"),
-        giaTien: yup
+
+        price: yup
             .number()
             .min(0, "Giá tiền phải là số không âm")
             .notOneOf([0], "Giá tiền phải khác 0"),
 
-        phongTam: yup
-            .number()
-            .min(0, "Phòng tắm phải là số không âm")
-            .notOneOf([0], "Phòng tắm phải khác 0"),
-        dieuHoa: yup
-            .boolean("Phải là true or false nhé")
-            .required("Điều hòa không được bỏ trống"),
+        tienNghi: yup.string().required("Không được bỏ trống tiện ích phòng"),
 
-        tivi: yup
-            .boolean("Phải là true or false nhé")
-            .required("Tivi không được bỏ trống"),
-        hoBoi: yup
-            .boolean("Phải là true or false nhé")
-            .required("Hồ bơi không được bỏ trống"),
-        doXe: yup
-            .boolean("Phải là true or false nhé")
-            .required("Đỗ xe không được bỏ trống"),
-        mayGiat: yup
-            .boolean("Phải là true or false nhé")
-            .required("Máy giặt không được bỏ trống"),
-
-        wifi: yup.boolean().required("Wifi không được bỏ trống"),
-        moTa: yup.string().required("Không được bỏ trống mô tả"),
+        description: yup.string().required("Không được bỏ trống mô tả"),
     });
 
     const formik = useFormik({
         initialValues: {
-            tenPhong: "",
-            khach: 0,
-            phongNgu: 0,
-            giuong: 0,
-            phongTam: 0,
-            moTa: "",
-            giaTien: 0,
-            mayGiat: true,
-            dieuHoa: true,
-            wifi: true,
-            tivi: true,
-            bep: true,
-            hoBoi: true,
-            banLa: true,
-            maViTri: "",
-            doXe: true,
-            hinhAnh: "",
+            name: "",
+            soKhach: 0,
+            soLuong: 0,
+            tienNghi: 0,
+            description: "",
+            price: 0,
+            locationId: "",
+            avatar: "",
         },
         validationSchema: typeButton == "add" ? validateCreate : validateUpdate,
         enableReinitialize: true,
@@ -401,50 +345,38 @@ const ManageRoom = () => {
                                 <InputCustom
                                     label={"Tên phòng"}
                                     placehoder={"Nhập tên phòng"}
-                                    name="tenPhong"
-                                    error={errors.tenPhong}
-                                    touched={touched.tenPhong}
+                                    name="name"
+                                    error={errors.name}
+                                    touched={touched.name}
                                     onChange={handleChange}
-                                    value={values.tenPhong}
+                                    value={values.name}
                                     onBlur={handleBlur}
-                                    id={"tenPhong"}
+                                    id={"name"}
                                 />
                                 <div className="flex justify-between w-full gap-4">
                                     <InputCustom
                                         label={"Số lượng khách"}
                                         typeInput="number"
                                         placehoder={"Số lượng khách"}
-                                        name="khach"
-                                        error={errors.khach}
-                                        touched={touched.khach}
+                                        name="soKhach"
+                                        error={errors.soKhach}
+                                        touched={touched.soKhach}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.khach}
-                                        id={"khach"}
+                                        value={values.soKhach}
+                                        id={"soKhach"}
                                     />
                                     <InputCustom
                                         typeInput="number"
                                         label={"Số phòng ngủ"}
                                         placehoder={"Số phòng ngủ"}
-                                        name="phongNgu"
-                                        error={errors.phongNgu}
-                                        touched={touched.phongNgu}
+                                        name="soLuong"
+                                        error={errors.soLuong}
+                                        touched={touched.soLuong}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.phongNgu}
-                                        id={"phongNgu"}
-                                    />
-                                    <InputCustom
-                                        typeInput="number"
-                                        label={"Số giường"}
-                                        placehoder={"Số giường"}
-                                        name="giuong"
-                                        error={errors.giuong}
-                                        touched={touched.giuong}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.giuong}
-                                        id={"giuong"}
+                                        value={values.soLuong}
+                                        id={"soLuong"}
                                     />
                                 </div>
                                 <div className="flex justify-between w-full gap-4 items-center">
@@ -452,25 +384,25 @@ const ManageRoom = () => {
                                         typeInput="number"
                                         label={"Giá 1 đêm"}
                                         placehoder={"Giá 1 đêm"}
-                                        name="giaTien"
-                                        error={errors.giaTien}
-                                        touched={touched.giaTien}
+                                        name="price"
+                                        error={errors.price}
+                                        touched={touched.price}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.giaTien}
-                                        id={"giaTien"}
+                                        value={values.price}
+                                        id={"price"}
                                     />
                                     <InputCustom
                                         label={"Phòng tắm"}
                                         typeInput="number"
                                         placehoder={"Số lượng phòng tắm"}
-                                        name="phongTam"
-                                        error={errors.phongTam}
-                                        touched={touched.phongTam}
+                                        name="tienNghi"
+                                        error={errors.tienNghi}
+                                        touched={touched.tienNghi}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.phongTam}
-                                        id={"phongTam"}
+                                        value={values.tienNghi}
+                                        id={"tienNghi"}
                                     />
 
                                     <div className="mb-2">
@@ -484,10 +416,10 @@ const ManageRoom = () => {
                                                 placeholder="Chọn phòng theo vị trí"
                                                 options={optionForm}
                                             />
-                                            {errors.maViTri &&
-                                            touched.maViTri ? (
+                                            {errors.locationId &&
+                                            touched.locationId ? (
                                                 <p className="text-red-500 mt-2">
-                                                    {errors.maViTri}
+                                                    {errors.locationId}
                                                 </p>
                                             ) : null}
                                         </div>
@@ -496,85 +428,14 @@ const ManageRoom = () => {
                                 <InputCustom
                                     label={"Mô tả"}
                                     placehoder={"Nhập mô tả"}
-                                    name="moTa"
-                                    error={errors.moTa}
-                                    touched={touched.moTa}
+                                    name="description"
+                                    error={errors.description}
+                                    touched={touched.description}
                                     onChange={handleChange}
-                                    value={values.moTa}
+                                    value={values.description}
                                     onBlur={handleBlur}
-                                    id={"moTa"}
+                                    id={"description"}
                                 />
-                                <div className="flex justify-between w-full gap-4">
-                                    <InputCustom
-                                        label={"Điều hòa"}
-                                        placehoder={"Điều hòa"}
-                                        name="dieuHoa"
-                                        error={errors.dieuHoa}
-                                        touched={touched.dieuHoa}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.dieuHoa}
-                                        id={"dieuHoa"}
-                                    />
-                                    <InputCustom
-                                        label={"Wifi"}
-                                        placehoder={"wifi"}
-                                        name="wifi"
-                                        error={errors.wifi}
-                                        touched={touched.wifi}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.wifi}
-                                        id={"wifi"}
-                                    />
-                                    <InputCustom
-                                        label={"Tivi"}
-                                        placehoder={"Ti vi"}
-                                        name="tivi"
-                                        error={errors.tivi}
-                                        touched={touched.tivi}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.tivi}
-                                        id={"tivi"}
-                                    />
-                                </div>
-
-                                <div className="flex justify-between w-full gap-4">
-                                    <InputCustom
-                                        label={"Hồ bơi"}
-                                        placehoder={"Hồ bơi"}
-                                        name="hoBoi"
-                                        error={errors.hoBoi}
-                                        touched={touched.hoBoi}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.hoBoi}
-                                        id={"hoBoi"}
-                                    />
-                                    <InputCustom
-                                        label={"Đỗ xe"}
-                                        placehoder={"Đỗ xe"}
-                                        name="doXe"
-                                        error={errors.doXe}
-                                        touched={touched.doXe}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.doXe}
-                                        id={"doXe"}
-                                    />
-                                    <InputCustom
-                                        label={"Máy giặt"}
-                                        placehoder={"Máy giặt"}
-                                        name="mayGiat"
-                                        error={errors.mayGiat}
-                                        touched={touched.mayGiat}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.mayGiat}
-                                        id={"mayGiat"}
-                                    />
-                                </div>
 
                                 <div className="flex justify-end p-3 gap-3">
                                     <button
@@ -614,9 +475,9 @@ const ManageRoom = () => {
                                     {/* Avatar */}
                                     <form onSubmit="">
                                         <div className="w-80 h-32 py-10 my-10  flex items-center justify-center">
-                                            {roomUpdate.hinhAnh ? (
+                                            {roomUpdate.avatar ? (
                                                 <img
-                                                    src={roomUpdate.hinhAnh}
+                                                    src={roomUpdate.avatar}
                                                     alt="placeholder"
                                                     className="w-80 h-52 object-contain "
                                                 />
@@ -702,45 +563,15 @@ const ManageRoom = () => {
         if (typeButton == "update" && roomUpdate) {
             //console.log(roomUpdate);
             const updateValues = {
-                tenPhong: roomUpdate.tenPhong,
-                khach: roomUpdate.khach,
-                phongNgu: roomUpdate.phongNgu,
-                giuong: roomUpdate.giuong,
-                phongTam: roomUpdate.phongTam,
-                moTa: roomUpdate.moTa,
-                giaTien: roomUpdate.giaTien,
-                mayGiat: roomUpdate.mayGiat,
-                dieuHoa: roomUpdate.dieuHoa,
-                wifi: roomUpdate.wifi,
-                tivi: roomUpdate.tivi,
-                bep: roomUpdate.bep,
-                hoBoi: roomUpdate.hoBoi,
-                banLa: roomUpdate.banLa,
-                maViTri: roomUpdate.maViTri,
-                doXe: roomUpdate.doXe,
-                hinhAnh: roomUpdate.hinhAnh,
+                name: roomUpdate.name,
+                soKhach: roomUpdate.soKhach,
+                soLuong: roomUpdate.soLuong,
+                tienNghi: roomUpdate.tienNghi,
+                description: roomUpdate.description,
+                price: roomUpdate.price,
+                hinhAnh: roomUpdate.avatar,
             };
             formik.setValues(updateValues);
-            //    {
-            //     setFieldValue("tenPhong", roomUpdate.tenPhong);
-            //     setFieldValue("khach", roomUpdate.khach);
-            //     setFieldValue("phongNgu", roomUpdate.phongNgu);
-            //     setFieldValue("phongTam", roomUpdate.phongTam);
-            //     setFieldValue("giuong", roomUpdate.giuong);
-            //     setFieldValue("moTa", roomUpdate.moTa);
-            //     setFieldValue("giaTien", roomUpdate.giaTien);
-            //     setFieldValue("tivi", roomUpdate.tivi);
-            //     setFieldValue("wifi", roomUpdate.wifi);
-            //     setFieldValue("doXe", roomUpdate.doXe);
-            //     setFieldValue("maViTri", roomUpdate.maViTri);
-            //     setFieldValue("dieuHoa", roomUpdate.dieuHoa);
-            //     setFieldValue("hoBoi", roomUpdate.hoBoi);
-            //     setFieldValue("mayGiat", roomUpdate.mayGiat);
-            //    }
-            // setFieldValue(
-            //     "birthday",
-            //     isValidDate(user.birthday) ? user.birthday : ""
-            // );
         }
     }, [roomUpdate]);
 
@@ -807,18 +638,18 @@ const ManageRoom = () => {
                                     <div className=" w-full  h-64">
                                         <img
                                             className="w-11/12 h-full object-cover rounded-2xl"
-                                            src={item.hinhAnh}
+                                            src={item.avatar}
                                             alt=""
                                         />
                                     </div>
                                 </Link>
 
                                 <h3 className="font-semibold mt-3 min-h-12">
-                                    {item.tenPhong}
+                                    {item.name}
                                 </h3>
                                 <div className="flex justify-between my-2  mr-10 ml-1">
                                     {/* <span className="text-gray-600">
-                                        Số khách: {item.khach}
+                                        Số khách: {item.soKhach}
                                     </span>
                                     <h5 className=" text-gray-600 ">
                                         Giường đôi: {item.giuong}
@@ -857,7 +688,7 @@ const ManageRoom = () => {
                                 </div>
 
                                 {/* <h4 className="font-semibold">
-                                    {convertCurrency(item.giaTien)}
+                                    {convertCurrency(item.price)}
                                     /đêm
                                 </h4> */}
                             </div>
