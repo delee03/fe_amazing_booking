@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IconLocation, SearchIcon } from "../../Icon/IconStorage";
 import { layViTri } from "../../service/getLocationSearch";
+import { getValueLocation } from "../../redux/viTriSlice";
 import { useDebounce } from "../../hooks/UseDebounce";
 import { setdsViTri, updateValueSearch } from "../../redux/viTriSlice";
 import { DownOutlined } from "@ant-design/icons";
@@ -39,16 +40,17 @@ const BoxSearch = () => {
     //console.log(dsViTri);
 
     useEffect(() => {
-        layViTri
-            .getListLocation()
-            .then((res) => {
-                const data = res.data;
-                console.log(data);
-                dispatch(setdsViTri(data));
-            })
-            .catch((err) => {
-                console.log("Lỗi khi gọi api lấy vị trí", err);
-            });
+        dispatch(getValueLocation());
+        // layViTri
+        //     .getListLocation()
+        //     .then((res) => {
+        //         const data = res.data;
+        //         console.log(data);
+        //         dispatch(setdsViTri(data));
+        //     })
+        //     .catch((err) => {
+        //         console.log("Lỗi khi gọi api lấy vị trí", err);
+        //     });
     }, []);
 
     // Lắng nghe sự thay đổi của valueSearch để filter dữ liệu create 1 new array để render ra dropdown

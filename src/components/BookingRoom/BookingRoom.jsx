@@ -64,7 +64,7 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
         setSoNgay(diff);
     }, [checkInDate, checkOutDate]);
 
-    console.log(soNgay);
+    console.log(soNgay * giaTien);
 
     const hanldeBooking = () => {
         // Kiểm tra xem người dùng đã đăng nhập chưa
@@ -98,14 +98,17 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
                 checkOutDate,
                 "DD-MM-YYYY"
             ).toISOString();
+            console.log(giaTien * soNgay);
             booking
                 .createBooking({
-                    maPhong: paramsId,
-                    maNguoiDung: user?.id,
-                    ngayDen: formattedCheckInDate,
-                    ngayDi: formattedCheckOutDate,
-                    soLuongKhach: soKhachChon,
-                    // tongTien: giaTien * soNg
+                    roomId: paramsId,
+                    userId: user?.id,
+                    checkIn: formattedCheckInDate,
+                    checkOut: formattedCheckOutDate,
+                    guests: soKhachChon,
+                    totalPrice: giaTien * soNgay,
+                    paymentMethod: "CREDIT_CARD",
+                    paymentStatus: false,
                 })
                 .then((res) => {
                     console.log(res);

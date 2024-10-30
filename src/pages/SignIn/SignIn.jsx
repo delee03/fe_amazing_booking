@@ -45,13 +45,11 @@ const SignIn = () => {
                 .string()
                 .email("Email không hợp lệ")
                 .required("Không được bỏ trống email"),
-            password: yup
-                .string()
-                .required("Không được bỏ trống password")
-                .matches(
-                    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,12}$/,
-                    "Password gồm 6-12 ký tự, ít nhất 1 chữ hoa, 1 số và 1 ký tự đặc biệt"
-                ),
+            password: yup.string().required("Không được bỏ trống password"),
+            // .matches(
+            //     /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,12}$/,
+            //     "Password gồm 6-12 ký tự, ít nhất 1 chữ hoa, 1 số và 1 ký tự đặc biệt"
+            // ),
         }),
         onSubmit: (values) => {
             console.log(values);
@@ -67,7 +65,7 @@ const SignIn = () => {
                 })
                 .catch((err) => {
                     console.log(err);
-                    message.error("Đăng nhập thất bại");
+                    message.error(err.response.data.message, 2);
                 });
         },
     });
@@ -180,7 +178,7 @@ const SignIn = () => {
                         <button
                             onClick={handleSubmit}
                             type="submit"
-                            className="w-full bg-main text-white font-semibold py-2 rounded-md mb-6 hover:bg-red-500"
+                            className="w-full focus:bg-white focus:text-main focus:border-red-500 focus:border delay-150 bg-main text-white font-semibold py-2 rounded-md mb-6 hover:bg-red-800"
                         >
                             Đăng nhập
                         </button>

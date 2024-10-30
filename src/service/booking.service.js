@@ -1,7 +1,7 @@
 import { http } from "./config";
 export const booking = {
     createBooking: (data) => {
-        return http.post("/dat-phong", data);
+        return http.post("/booking", data);
     },
     get: (id) => {
         return http.get(`/booking/${id}`);
@@ -13,7 +13,7 @@ export const booking = {
         return http.delete(`/booking/${id}`);
     },
     getAllBooking: () => {
-        return http.get("/dat-phong");
+        return http.get("/booking");
     },
     getBookingByRoomId: (id) => {
         return http.get(`/booking/room/${id}`);
