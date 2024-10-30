@@ -104,7 +104,7 @@ const ManagerUser = () => {
             name: "",
             password: "",
             phone: "",
-            gender: "",
+            gender: true,
             birthday: "",
             role: "ADMIN",
         },
@@ -112,14 +112,21 @@ const ManagerUser = () => {
         validationSchema:
             typeButton === "add" ? addUserSchema : updateUserSchema,
         enableReinitialize: true, // Reinitialize form when initialValues change
+
         onSubmit: (values) => {
+            // Convert gender to boolean and birthday to ISO8601
+            const formData = {
+                ...values,
+                birthday: dayjs(values.birthday, "DD-MM-YYYY").toISOString(),
+                gender: values.gender === "true", // Chuyển "true" thành true và "false" thành false
+            };
             console.log("Formik Errors before submit:", errors);
 
             if (typeButton === "update") {
                 console.log(typeButton); // Confirm it says "update"
                 console.log("Updating user...");
                 nguoiDungService
-                    .updateUser(userUpdate.id, values)
+                    .updateUser(userUpdate.id, formData)
                     .then((res) => {
                         message.success({
                             content: "Cập nhật user thành công",
@@ -135,7 +142,7 @@ const ManagerUser = () => {
             }
             if (typeButton === "add") {
                 nguoiDungService
-                    .createUser(values)
+                    .createUser(formData)
                     .then((res) => {
                         message.success({ content: "Thêm thành công" });
                         dispatch(getValueUserApi());
@@ -165,23 +172,27 @@ const ManagerUser = () => {
             title: "ID",
             dataIndex: "id",
             key: "id",
+            render: (text, record, index) => index + 1,
         },
 
         {
             title: "Avatar",
             dataIndex: "avatar",
             key: "avatar",
+            width: 400,
         },
 
         {
             title: "Name",
             dataIndex: "name",
             key: "name",
+            width: 300,
         },
         {
             title: "Ngày sinh",
             dataIndex: "birthday",
             key: "birthday",
+            width: 200,
         },
 
         {
@@ -320,8 +331,8 @@ const ManagerUser = () => {
                                     className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full px-2.5 py-2"
                                 >
                                     <option value="">Chọn giới tính</option>
-                                    <option value="true">Nam</option>
-                                    <option value="false">Nữ</option>
+                                    <option value={values.gender}>Nam</option>
+                                    <option value={values.gender}>Nữ</option>
                                 </select>
                                 {touched.gender && errors.gender ? (
                                     <p className="text-red-500 py-2">

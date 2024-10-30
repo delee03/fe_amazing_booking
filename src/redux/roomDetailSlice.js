@@ -37,7 +37,7 @@ export const fetchUploadImageRoom = createAsyncThunk(
         const response = await getRoomByLocationId.upLoadRoomImage(id, data);
 
         console.log(response);
-        return response.data.content;
+        return response.data;
     }
 );
 export const fetchDeleteRoom = createAsyncThunk(

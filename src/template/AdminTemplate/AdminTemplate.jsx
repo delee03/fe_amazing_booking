@@ -4,7 +4,7 @@ import { Button, Layout, Menu, message, Skeleton, theme, Tooltip } from "antd";
 import HeaderAdmin from "./HeaderAdmin";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Admin.module.scss";
-import { Airbnb, AirbnbSmall } from "../../Icon/IconStorage";
+import { Airbnb, AirbnbSmall, LogoMain } from "../../Icon/IconStorage";
 import { HandleAuth } from "../../pages/Auth/HandleAuth";
 const { Header, Sider, Content } = Layout;
 const AdminTemplate = () => {
@@ -69,7 +69,8 @@ const AdminTemplate = () => {
                             className="block demo-logo-vertical py-5 ml-8"
                         >
                             {!collapsed ? (
-                                <Airbnb width="17rem" height="3.5em" />
+                                // <Airbnb width="17rem" height="3.5em" />
+                                <LogoMain />
                             ) : (
                                 <AirbnbSmall width="5.5em" height="3.5em" />
                             )}

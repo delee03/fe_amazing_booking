@@ -67,7 +67,7 @@ const Footer = () => {
                                     </li>
                                     <li>
                                         <a href="/logo-maker?source=footer">
-                                            Fiverr Logo Maker
+                                            Amazing Logo Maker
                                         </a>
                                     </li>
                                     <li>
@@ -208,17 +208,17 @@ const Footer = () => {
                                     </li>
                                     <li>
                                         <a href="/categories/video-animation">
-                                            Selling on Fiverr
+                                            Selling on Amazing
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/categories/music-audio">
-                                            Buying on Fiverr
+                                            Buying on Amazing
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/logo-maker?source=footer">
-                                            AirBnb Guides
+                                            Amazing Guides
                                         </a>
                                     </li>
                                     <li>
@@ -234,7 +234,7 @@ const Footer = () => {
                         <article>
                             <div className="footer_title">
                                 <div className="footer_title_top">
-                                    <h6>Airbnb</h6>
+                                    <h6>Amazing</h6>
                                 </div>
                                 <div className="footer_arrow">
                                     <span className="footer_arrow_top">
@@ -381,7 +381,7 @@ const Footer = () => {
                         </span>
                         <p className="footer_legal">
                             <span className="coppy_right">
-                                © Airbnb.Inc Ltd. 2024
+                                © Amazing.Inc Ltd. 2024
                             </span>
                         </p>
                     </div>
@@ -390,7 +390,7 @@ const Footer = () => {
                             <li>
                                 <a
                                     className="social-link"
-                                    href="https://www.tiktok.com/@fiverr"
+                                    href="https://www.tiktok.com/@Amazing"
                                 >
                                     <LogoTiktok />
                                 </a>
@@ -398,7 +398,7 @@ const Footer = () => {
                             <li>
                                 <a
                                     className="social-link"
-                                    href="https://www.instagram.com/fiverr/"
+                                    href="https://www.instagram.com/Amazing/"
                                 >
                                     <LogoInstagram />
                                 </a>
@@ -406,7 +406,7 @@ const Footer = () => {
                             <li>
                                 <a
                                     className="social-link"
-                                    href="https://www.linkedin.com/authwall?trk=bf&trkInfo=AQEGO1eIy6RTSgAAAZHRITSgH2pRCxFizijw56G2wYol93VsYKM53V1Dj8V4qYE5RUUfAgf8EX6yosANmMIwNMmMYQprPP1JAw64uCYvSL7tvMp06FdMZtgl0tRp-63SbVZ9cME=&original_referer=&sessionRedirect=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2Ffiverr-com"
+                                    href="https://www.linkedin.com/authwall?trk=bf&trkInfo=AQEGO1eIy6RTSgAAAZHRITSgH2pRCxFizijw56G2wYol93VsYKM53V1Dj8V4qYE5RUUfAgf8EX6yosANmMIwNMmMYQprPP1JAw64uCYvSL7tvMp06FdMZtgl0tRp-63SbVZ9cME=&original_referer=&sessionRedirect=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2FAmazing-com"
                                 >
                                     <LogoLinkedIn />
                                 </a>
@@ -414,7 +414,7 @@ const Footer = () => {
                             <li>
                                 <a
                                     className="social-link"
-                                    href="https://www.facebook.com/Fiverr/"
+                                    href="https://www.facebook.com/Amazing/"
                                 >
                                     <LogoFacebook />
                                 </a>
@@ -422,7 +422,7 @@ const Footer = () => {
                             <li>
                                 <a
                                     className="social-link"
-                                    href="https://www.pinterest.com/fiverr/"
+                                    href="https://www.pinterest.com/Amazing/"
                                 >
                                     <LogoPinterest />
                                 </a>
@@ -430,7 +430,7 @@ const Footer = () => {
                             <li>
                                 <a
                                     className="social-link"
-                                    href="https://twitter.com/fiverr"
+                                    href="https://twitter.com/Amazing"
                                 >
                                     <LogoTwitter />
                                 </a>

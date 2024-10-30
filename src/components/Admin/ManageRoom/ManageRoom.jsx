@@ -260,7 +260,14 @@ const ManageRoom = () => {
         event.preventDefault();
         // Chuyển đổi dữ liệu vào formData
         let formData = new FormData();
-        formData.append("formFile", roomImage.file);
+        // const file = event.target.files[0];
+        // if (file) {
+        //     setRoomImage({
+        //         file: file,
+        //         preview: URL.createObjectURL(file), // Tạo URL preview ngay lập tức
+        //     });
+        // }
+        formData.append("file", roomImage.file);
         // Gọi API upload ảnh
         dispatch(
             fetchUploadImageRoom({
@@ -393,9 +400,8 @@ const ManageRoom = () => {
                                         id={"price"}
                                     />
                                     <InputCustom
-                                        label={"Phòng tắm"}
-                                        typeInput="number"
-                                        placehoder={"Số lượng phòng tắm"}
+                                        label={"Tiện nghi"}
+                                        placehoder={"Các tiện nghi"}
                                         name="tienNghi"
                                         error={errors.tienNghi}
                                         touched={touched.tienNghi}
@@ -475,23 +481,18 @@ const ManageRoom = () => {
                                     {/* Avatar */}
                                     <form onSubmit="">
                                         <div className="w-80 h-32 py-10 my-10  flex items-center justify-center">
-                                            {roomUpdate.avatar ? (
+                                            {roomImage?.preview ? (
                                                 <img
-                                                    src={roomUpdate.avatar}
-                                                    alt="placeholder"
-                                                    className="w-80 h-52 object-contain "
-                                                />
-                                            ) : !roomImage ? (
-                                                <img
-                                                    src="https://via.placeholder.com/300"
-                                                    alt="placeholder"
-                                                    className="w-80 h-52 object-contain "
+                                                    src={roomImage.preview}
+                                                    alt="Room Preview"
+                                                    className="w-80 h-52 object-contain"
                                                 />
                                             ) : (
                                                 <img
-                                                    className="w-80 h-52 object-contain "
-                                                    src={roomImage.preview}
-                                                ></img>
+                                                    src="https://via.placeholder.com/300"
+                                                    alt="placeholder"
+                                                    className="w-80 h-52 object-contain"
+                                                />
                                             )}
                                         </div>
                                         <input
@@ -569,7 +570,7 @@ const ManageRoom = () => {
                 tienNghi: roomUpdate.tienNghi,
                 description: roomUpdate.description,
                 price: roomUpdate.price,
-                hinhAnh: roomUpdate.avatar,
+                avatar: roomUpdate.avatar,
             };
             formik.setValues(updateValues);
         }

@@ -13,15 +13,7 @@ export const getRoomByLocationId = {
         return http.get(`/rooms/room-by-id/${id}`);
     },
     upLoadRoomImage: (idRoom, formData) => {
-        return http.post(
-            `/phong-thue/upload-hinh-phong?maPhong=${idRoom}`,
-            formData,
-            {
-                headers: {
-                    token: getTokeStorage("token") || "",
-                },
-            }
-        );
+        return http.post(`/rooms/avatar/${idRoom}`, formData);
     },
     createRoom: (data) => {
         return http.post(`/phong-thue`, data, {
@@ -31,17 +23,13 @@ export const getRoomByLocationId = {
         });
     },
     deleteRoom: (id) => {
-        return http.delete(`/phong-thue/${id}`, {
+        return http.delete(`/rooms/${id}`, {
             headers: {
                 token: getTokeStorage("token") || "",
             },
         });
     },
     uploadRoom: (id, data) => {
-        return http.put(`/phong-thue/${id}`, data, {
-            headers: {
-                token: getTokeStorage("token") || "",
-            },
-        });
+        return http.put(`/rooms/${id}`, data);
     },
 };

@@ -3,9 +3,6 @@ export const booking = {
     createBooking: (data) => {
         return http.post("/booking", data);
     },
-    get: (id) => {
-        return http.get(`/booking/${id}`);
-    },
     update: (id, data) => {
         return http.put(`/booking/${id}`, data);
     },

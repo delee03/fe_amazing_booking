@@ -1,4 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { booking } from "../service/booking.service";
+
+export const fetchAllBookings = createAsyncThunk(
+    "bookings/fetchAllBookings",
+    async (_, thunkApi) => {
+        const response = await booking.getAllBooking();
+        console.log(response);
+        return response.data.content;
+    }
+);
 
 const initialState = {
     arrReservation: [],
@@ -22,6 +32,12 @@ const reservationSlice = createSlice({
             state.arrRoomById = [...state.arrRoomById, action.payload];
             //  console.log(action);
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchAllBookings.fulfilled, (state, action) => {
+            state.arrAllBooking = action.payload;
+            // console.log(action);
+        });
     },
 });
 

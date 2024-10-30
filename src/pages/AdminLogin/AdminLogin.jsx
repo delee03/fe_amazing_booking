@@ -35,6 +35,11 @@ const AdminLogin = () => {
 
     const navigate = useNavigate();
 
+    // useEffect(() => {
+    //     localStorage.removeItem("user");
+    //     localStorage.removeItem("token");
+    // }, []);
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -54,7 +59,7 @@ const AdminLogin = () => {
                 .then((res) => {
                     setLocalStorage("user", res.data.content.user);
                     setLocalStorage("role", res.data.content.user.role);
-                    setLocalStorage("token", res.data.content.token); //check role user or admin từ token
+                    setLocalStorage("token", res.data.token); //check role user or admin từ token
                     const checkPermission = HandleAuth();
                     if (checkPermission) {
                         message.success("Chào mừng admin đã quay trở lại", 2);

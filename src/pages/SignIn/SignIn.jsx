@@ -13,6 +13,8 @@ import { setLocalStorage } from "../../utils/localStorage.js";
 import { updateInfoUser, updateAvatarUser } from "../../redux/authSlice";
 import { useDispatch } from "react-redux";
 
+import SignInGoogle from "./SignInWGoogle.jsx";
+
 const SignIn = () => {
     // const [data, setData] = useState([]);
     // const navigate = useNavigate();
@@ -205,16 +207,16 @@ const SignIn = () => {
                             <div className="">Đăng nhập với Facebook</div>
                             <div className=""></div>
                         </a>
-                        <a
-                            href="https://www.google.com/"
+                        <div
+                            href=""
                             className="flex items-center justify-around border border-gray-300 text-gray-700 font-semibold py-2 rounded-md hover:bg-gray-100"
                         >
-                            <button className="">
-                                <SvgGoogle />
-                            </button>
-                            <div className="">Đăng nhập với Google</div>
+                            {/* <SvgGoogle /> */}
+
+                            <SignInGoogle />
+
                             <div className=""></div>
-                        </a>
+                        </div>
                         <a
                             href="https://www.apple.com/vn/"
                             className="flex items-center justify-around border border-gray-300 text-gray-700 font-semibold py-2 rounded-md hover:bg-gray-100"
