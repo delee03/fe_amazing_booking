@@ -10,6 +10,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { setLocalStorage } from "../../utils/localStorage.js";
+import { updateInfoUser, updateAvatarUser } from "../../redux/authSlice";
+import { useDispatch } from "react-redux";
 
 const SignIn = () => {
     // const [data, setData] = useState([]);
@@ -34,6 +36,7 @@ const SignIn = () => {
     // };
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const formik = useFormik({
         initialValues: {
@@ -58,8 +61,9 @@ const SignIn = () => {
                 .then((res) => {
                     setLocalStorage("user", res.data.content.user);
                     setLocalStorage("role", res.data.content.user.role);
-                    setLocalStorage("token", res.data.content.token); //check role user or admin từ token
+                    setLocalStorage("token", res.data.token); //check role user or admin từ token
                     message.success("Đăng nhập thành công", 2);
+                    dispatch(updateInfoUser(res.data.content.user));
                     navigate("/");
                     console.log(res);
                 })

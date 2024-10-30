@@ -6,7 +6,7 @@ export const getComments = createAsyncThunk(
     async (_, thunkApi) => {
         const resolve = await comment.getAllComment();
         console.log(resolve);
-        return resolve.data.content;
+        return resolve.data;
     }
 );
 
@@ -20,7 +20,7 @@ export const commentSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getComments.fulfilled, (state, action) => {
-            console.log(action);
+            // console.log(action);
             state.dsDanhGia = action.payload;
         });
     },

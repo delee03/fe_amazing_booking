@@ -12,7 +12,7 @@ import { convertCurrency } from "../../common/convertCurrency";
 import SpinnerCustom from "../Custom/SpinnerCustom";
 import UserInfo from "./UserInfo";
 import HanldeUpdateUserInfo from "./HanldeUpdateUserInfo";
-import { Button, DatePicker, Modal } from "antd";
+import { Button, DatePicker, message, Modal } from "antd";
 import InputCustom from "../Custom/InputCustom";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -23,37 +23,48 @@ import { nguoiDungService } from "../../service/nguoiDung.service";
 
 const UserProfile = () => {
     // const { user } = getLocalStorage("user");
-    const user = useSelector((state) => state.authSlice.infoUser);
 
+    const user = useSelector((state) => state.authSlice.infoUser);
     console.log(user);
 
     const dispatch = useDispatch();
-
-    // const [roomReservation, setRoomReservation] = useState([]);
-    //console.log(user);
-    // const [infoUser, setUserInfo] = useState({});
-
+    // Kiểm tra và cập nhật Redux từ localStorage khi user thay đổi
     // useEffect(() => {
-    //     authService
-    //         .getInfoUser(user?.id)
-    //         .then((res) => {
-    //             setUserInfo(res.data.content);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         });
-    // }, []);
+    //     const handleStorageChange = () => {
+    //         const storedUser = getLocalStorage("user");
+    //         if (storedUser) {
+    //             dispatch(updateInfoUser(storedUser));
+    //         } else {
+    //             // Nếu không có người dùng trong localStorage (đăng xuất)
+    //             dispatch(updateInfoUser(null));
+    //         }
+    //     };
+
+    //     // Lắng nghe sự kiện storage
+    //     window.addEventListener('storage', handleStorageChange);
+
+    //     // Gọi handleStorageChange ngay khi component mount
+    //     handleStorageChange();
+
+    //     // Cleanup sự kiện khi component unmount
+    //     return () => {
+    //         window.removeEventListener('storage', handleStorageChange);
+    //     };
+    // }, [dispatch]);
+
     const { arrReservation } = useSelector((state) => state.reservationReducer);
-    const { arrRoomById } = useSelector((state) => state.reservationReducer);
-    //console.log(arrRoomById);
+    // const { arrRoomById } = useSelector((state) => state.reservationReducer);
+
+    console.log(arrReservation);
+    //  console.log(arrRoomById);
     //get Reservation by id of that user and update to redux
-    //console.log(arrReservation);
+
     useEffect(() => {
         if (user?.id && arrReservation.length === 0) {
             authService
                 .getReservations(user?.id)
                 .then((res) => {
-                    // console.log(res);
+                    console.log(res);
                     dispatch(updateFromApiReservation(res.data.content));
                 })
                 .catch((err) => {
@@ -61,27 +72,6 @@ const UserProfile = () => {
                 });
         }
     }, [user?.id, arrReservation.length, dispatch]);
-    //get Room by id of that reservation and update to redux
-    //đảm bảo là arrReservation đã có dữ liệu và arrRoomById chưa có dữ liệu mới chạy tránh gọi lại nhiều lần khi chuyển đổi url
-    //redundant api calls and dispatches
-    useEffect(() => {
-        if (arrReservation.length > 0 && arrRoomById.length === 0) {
-            const fetchRooms = async () => {
-                for (let i = 0; i < arrReservation.length; i++) {
-                    const roomId = arrReservation[i].maPhong;
-                    try {
-                        const res = await getRoomByLocationId.getRoomById(
-                            roomId
-                        );
-                        dispatch(updateRoomReservation(res.data.content));
-                    } catch (err) {
-                        console.log(err);
-                    }
-                }
-            };
-            fetchRooms();
-        }
-    }, [arrReservation, arrRoomById.length]);
 
     const [step, setStep] = useState(1);
     const [open, setOpen] = React.useState(false);
@@ -116,16 +106,17 @@ const UserProfile = () => {
         event.preventDefault();
         // Chuyển đổi dữ liệu vào formData
         let formData = new FormData();
-        formData.append("formFile", avatar.file);
+        formData.append("file", avatar.file);
         // let { token } = infoUser;
         // console.log(token);
         nguoiDungService
-            .uploadAvatar(formData)
+            .uploadAvatar(user.id, formData)
             .then((res) => {
                 console.log(res);
-                dispatch(updateAvatarUser(res.data.content.avatar));
+                dispatch(updateAvatarUser(res.data.avatar));
                 setStep(1);
                 setOpen(false);
+                message.success("Cập nhật ảnh thành công");
             })
             .catch((err) => {
                 console.log(err);
@@ -178,6 +169,7 @@ const UserProfile = () => {
                     console.log(res);
                     //update lại thông tin user
                     dispatch(updateInfoUser(res.data.content));
+                    message.success("Cập nhật thông tin thành công");
                 })
                 .catch((error) => {
                     console.log(error);
@@ -297,14 +289,14 @@ const UserProfile = () => {
                                                 : null
                                         }
                                     />
-                                    {errors.birthday && touched.birthday ? (
+                                    {errors.birthday || touched.birthday ? (
                                         <p className="text-red-500 mt-2">
                                             {errors.birthday}
                                         </p>
                                     ) : null}
                                 </div>
 
-                                <div className="flex justify-end p-3 gap-3">
+                                <div className="flex justify-end p-3 gap-3 ">
                                     <button
                                         type="submit"
                                         // onClick={() => setStep(step + 1)}
@@ -425,103 +417,118 @@ const UserProfile = () => {
                                 Chỉnh sửa hồ sơ
                             </button>
                         </div>
-                        {arrRoomById.length === 0 ? (
+                        {arrReservation.length === 0 ? (
                             <h3 className="font-semibold my-3 text-2xl text-main">
                                 Không có phòng nào đã đặt
                             </h3>
                         ) : (
                             <h3 className="font-semibold my-3 text-2xl text-main">
-                                Lịch sử phòng của {user.name} đã đặt tại Airbnb
-                                nè
+                                Lịch sử đặt phòng của {user.name} đã đặt tại
+                                Amazing nè
                             </h3>
                         )}
 
                         {/* Danh sách phòng đã thuê */}
                         <div className="grid grid-cols-1 gap-4">
-                            {arrRoomById?.map((item, index) => {
-                                //map 2 mảng để lấy ra thông tin phòng đã đặt là 1 object
-                                const matchingReservation = arrReservation.find(
-                                    (reserve) => reserve.maPhong === item.id
-                                );
-                                //   console.log(matchingReservation);
+                            {arrReservation?.map((item, index) => {
+                                // //map 2 mảng để lấy ra thông tin phòng đã đặt là 1 object
+                                // const matchingReservation = arrReservation.find(
+                                //     (reserve) => reserve.maPhong === item.id
+                                // );
+                                // //   console.log(matchingReservation);
                                 return (
                                     <div
-                                        className="bg-white shadow-md rounded-md overflow-hidden  pb-8"
+                                        className="bg-white shadow-md rounded-md overflow-hidden  pb-8 pt-3"
                                         key={index}
                                     >
+                                        <strong className="ml-4 ">
+                                            {` Bạn cần phải đảm bảo thanh toán trước ngày
+                                            ${new Date(
+                                                item.checkIn
+                                            ).toLocaleDateString("vi-VN")}
+                                            nhé`}
+                                        </strong>
                                         <img
-                                            src={item.hinhAnh}
+                                            src={item.room.avatar}
                                             alt="Phòng 1"
                                             className="w-full h-48 object-cover"
                                         />
                                         <div className="px-4 py-2 mt-2 flex justify-between items-start">
                                             <div className="w-10/12">
                                                 <h3 className="font-semibold text-lg">
-                                                    {item.tenPhong}
+                                                    {item.room.name}
                                                 </h3>
                                             </div>
                                             <p className="text-right font-semibold ">
                                                 <span>
+                                                    Tổng tiền :
                                                     {convertCurrency(
-                                                        item.giaTien,
-                                                        "VND"
+                                                        item.totalPrice
                                                     )}
                                                 </span>
-                                                / đêm
                                             </p>
                                         </div>
-                                        <div className="ml-3 mb-2 flex gap-x-2 justify-start">
-                                            <p>
-                                                <span>{item.khach}</span> khách
-                                                · Phòng studio ·{" "}
-                                                <span>{item.giuong}</span>{" "}
-                                                giường ·
-                                                <span>{item.phongTam}</span>{" "}
-                                                phòng tắm
-                                            </p>
-                                            <p>
-                                                {item.hoBoi
-                                                    ? "Đặt biệt: Hồ bơi"
-                                                    : ""}{" "}
-                                                -{item.wifi ? "Wifi" : ""}
-                                                {item.dieuHoa
-                                                    ? "Điều hòa"
-                                                    : ""}{" "}
-                                                -
-                                                {item.mayGiat ? "Máy giặt" : ""}{" "}
-                                                -{item.doXe ? "Chỗ đậu xe" : ""}
-                                            </p>
+                                        <div className="flex justify-between items-center">
+                                            <div className="ml-3 mb-2 flex gap-x-2 justify-start">
+                                                {item.room?.tienNghi
+                                                    .split(",")
+                                                    .map((item, index) => {
+                                                        return (
+                                                            <p className="capitalize">
+                                                                {item}
+                                                            </p>
+                                                        );
+                                                    })}
+                                            </div>
+                                            <div className="mr-4 mb-3">
+                                                {item.paymentStatus === true ? (
+                                                    <p className="text-green-700">
+                                                        Đã thanh toán
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-main">
+                                                        Chưa thanh toán
+                                                    </p>
+                                                )}
+                                            </div>
                                         </div>
-                                        <div>
-                                            {/* Add reservation information if found */}
-                                            {matchingReservation && (
-                                                <div className="ml-3 flex gap-x-3 flex-start">
-                                                    <p className="font-semibold">
-                                                        Ngày đến:{" "}
-                                                        {/* {matchingReservation.ngayDen} */}
-                                                        {new Date(
-                                                            matchingReservation.ngayDen
-                                                        ).toLocaleDateString(
-                                                            "vi-VN"
-                                                        )}
-                                                    </p>
-                                                    <p className="font-semibold">
-                                                        Ngày đi:{" "}
-                                                        {/* {matchingReservation.ngayDi} */}
-                                                        {new Date(
-                                                            matchingReservation.ngayDi
-                                                        ).toLocaleDateString(
-                                                            "vi-VN"
-                                                        )}
-                                                    </p>
-                                                    <p className="font-semibold">
-                                                        Số lượng khách:{" "}
-                                                        {
-                                                            matchingReservation.soLuongKhach
-                                                        }
-                                                    </p>
-                                                </div>
-                                            )}
+                                        <div className="flex justify-between items-center">
+                                            <div className="ml-3 w-8/12 flex gap-x-3 flex-start">
+                                                <p className="font-semibold">
+                                                    Ngày đến:{" "}
+                                                    {/* {matchingReservation.ngayDen} */}
+                                                    {new Date(
+                                                        item.checkIn
+                                                    ).toLocaleDateString(
+                                                        "vi-VN"
+                                                    )}
+                                                </p>
+                                                <p className="font-semibold">
+                                                    Ngày đi:{" "}
+                                                    {/* {matchingReservation.ngayDi} */}
+                                                    {new Date(
+                                                        item.checkOut
+                                                    ).toLocaleDateString(
+                                                        "vi-VN"
+                                                    )}
+                                                </p>
+                                                <p className="font-semibold">
+                                                    Số lượng khách:{" "}
+                                                    {item.guests}
+                                                </p>
+                                            </div>
+                                            <div className="w-4/12 mr-3 flex justify-end gap-5 items-center ">
+                                                <button
+                                                    className={`py-2 pt-3 pb-3 w-1/4 hover:bg-yellow-700 delay-200  px-1 bg-yellow-500 text-white rounded-md`}
+                                                >
+                                                    Hủy phòng
+                                                </button>
+                                                <button
+                                                    className={`py-2 pt-3  pb-3 w-1/4 hover:bg-red-800 delay-200  px-1 bg-main text-white rounded-md`}
+                                                >
+                                                    Thanh toán
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 );

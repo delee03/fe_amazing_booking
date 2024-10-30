@@ -20,12 +20,9 @@ export const nguoiDungService = {
         return await http.put(`/users/${id}`, data);
     },
     //POST
-    uploadAvatar: async (formData) => {
-        return await http.post("/users/upload-avatar", formData, {
-            headers: {
-                token: getTokeStorage("token") || "",
-            },
-        });
+    uploadAvatar: async (id, formData) => {
+        console.log("Update User Params:", id, formData); // Check params before sending request
+        return await http.post(`/users/avatar/${id}`, formData);
     },
     //
 };
