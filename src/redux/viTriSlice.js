@@ -10,7 +10,17 @@ export const getValueLocation = createAsyncThunk(
     }
 );
 
+export const fetchGetLocationById = createAsyncThunk(
+    "viTri/fetchGetLocationById",
+    async (id, thunkApi) => {
+        const resolve = await layViTri.getLocationById(id);
+        console.log(resolve.data);
+        return resolve.data;
+    }
+);
+
 const initialState = {
+    viTriId: "",
     dsViTri: [],
     valueSearch: "",
 };
@@ -36,6 +46,10 @@ export const viTriSlice = createSlice({
             })
             .addCase(getValueLocation.rejected, (state, action) => {
                 console.log("Lấy dữ liệu thất bại", action.error);
+            })
+            .addCase(fetchGetLocationById.fulfilled, (state, action) => {
+                // Khi dữ liệu được load thành công từ API, cập nhật vào state
+                state.viTriId = action.payload;
             });
     },
 });

@@ -8,20 +8,23 @@ import { convertCurrency } from "../../common/convertCurrency";
 import { message, Tooltip } from "antd";
 import { handleRoomFavorite } from "../../redux/roomFavoriteSlice";
 import { useMediaQuery } from "react-responsive";
+import "leaflet/dist/leaflet.css";
+import { fetchGetLocationById } from "../../redux/viTriSlice";
+import MapLocation from "./MapLocation";
 
 const ListRoomLocation = () => {
     const valueSearch = useSelector((state) => state.viTriReducer.valueSearch);
     const [searchParam, setSearchParam] = useSearchParams();
     const [loading, setLoading] = useState(true);
-
+    const [location, setLocation] = useState(null);
     let idLocation = searchParam.get("idLocation");
-    console.log(idLocation);
+    // console.log(idLocation);
     const [rooms, setRooms] = useState([]);
     const dispatch = useDispatch();
     const roomLiked = useSelector(
         (state) => state.roomFavoriteReducer.roomFavorite
     );
-    console.log(roomLiked);
+    //  console.log(roomLiked);
 
     const navigate = useNavigate();
     const handleIsFavoriteRoom = (id) => {
@@ -32,7 +35,13 @@ const ListRoomLocation = () => {
         return false;
     };
 
+    const locationData = useSelector((state) => state.viTriReducer.viTriId);
+    console.log(locationData);
+
     useEffect(() => {
+        // Gọi API lấy vị trí từ idLocation
+        dispatch(fetchGetLocationById(idLocation));
+
         // Gọi API lấy danh sách phòng theo vị trí từ idLocation
 
         getRoomByLocationId
@@ -40,13 +49,23 @@ const ListRoomLocation = () => {
             .then((res) => {
                 const data = res.data.content;
                 setRooms(data);
-                setLoading(false);
-                // console.log(res.data);
+
+                console.log(res.data);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, [idLocation]);
+
+        // Kiểm tra và chuyển đổi `latitude` và `longitude` thành số
+        if (locationData.latitude && locationData.longitude) {
+            setLocation({
+                latitude: parseFloat(locationData.latitude),
+                longitude: parseFloat(locationData.longitude),
+                city: locationData.city,
+            });
+            setLoading(false);
+        }
+    }, [idLocation, locationData]);
     //console.log(searchParam.get("idLocation"));
     //cần có 1 useEffect để gọi api lấy danh sách phòng theo vị trí từ idLocation
     // Sử dụng useEffect để hiển thị thông báo sau khi thêm vào yêu thích
@@ -218,17 +237,25 @@ const ListRoomLocation = () => {
                         <div
                             className={`${
                                 isMobile && "mt-28"
-                            } map w-full xl:w-5/12 h-screen`}
+                            } map w-full xl:w-5/12 h-screen `}
                         >
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22048138.81715737!2d1.0141049065281622!3d47.57901010729313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46ed8886cfadda85%3A0x72ef99e6b3fcf079!2zQ2jDonUgw4J1!5e0!3m2!1svi!2s!4v1726925750926!5m2!1svi!2s"
-                                width="100%"
-                                height="100%"
-                                style={{ border: 0 }}
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                            />
+                            {location ? (
+                                <MapLocation
+                                    latitude={location.latitude}
+                                    longitude={location.longitude}
+                                    city={location.city}
+                                />
+                            ) : (
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22048138.81715737!2d1.0141049065281622!3d47.57901010729313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46ed8886cfadda85%3A0x72ef99e6b3fcf079!2zQ2jDonUgw4J1!5e0!3m2!1svi!2s!4v1726925750926!5m2!1svi!2s"
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: 0 }}
+                                    allowFullScreen
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

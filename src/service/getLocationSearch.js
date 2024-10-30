@@ -7,6 +7,11 @@ export const layViTri = {
         return http.get("/locations");
     },
 
+    //Get By ID
+    getLocationById: (id) => {
+        return http.get(`/locations/${id}`);
+    },
+
     // DELETE
 
     deleteLocation: (id) => {
