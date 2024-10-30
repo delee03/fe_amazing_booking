@@ -9,6 +9,9 @@ export const booking = {
     delete: (id) => {
         return http.delete(`/booking/${id}`);
     },
+    getVnpayUrl: (bookingId) => {
+        return http.get(`/booking/vnpay-url/${bookingId}`);
+    },
     getAllBooking: () => {
         return http.get("/booking");
     },

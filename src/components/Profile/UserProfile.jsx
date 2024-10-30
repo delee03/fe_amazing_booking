@@ -20,6 +20,8 @@ import * as yup from "yup";
 import dayjs from "dayjs";
 import { UserIcon2 } from "../../Icon/IconStorage";
 import { nguoiDungService } from "../../service/nguoiDung.service";
+import { booking } from "../../service/booking.service";
+import { useLocation } from "react-router-dom";
 
 const UserProfile = () => {
     // const { user } = getLocalStorage("user");
@@ -53,8 +55,18 @@ const UserProfile = () => {
     // }, [dispatch]);
 
     const { arrReservation } = useSelector((state) => state.reservationReducer);
+    const [infoBooking, setInfoBooking] = useState({});
     // const { arrRoomById } = useSelector((state) => state.reservationReducer);
-
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const status = searchParams.get("status");
+    useEffect(() => {
+        if (status === "success") {
+            message.success("Thanh toán thành công!");
+        } else if (status === "failure") {
+            message.error("Thanh toán thất bại. Vui lòng thử lại.");
+        }
+    }, [status]);
     console.log(arrReservation);
     //  console.log(arrRoomById);
     //get Reservation by id of that user and update to redux
@@ -96,6 +108,16 @@ const UserProfile = () => {
     //     setStep(1);
     //     setOpen(false);
     // };
+    const handlePayment = async (bookingId) => {
+        try {
+            const response = await booking.getVnpayUrl(bookingId);
+            const paymentUrl = response.data; // URL thanh toán từ backend
+            window.location.href = paymentUrl; // Chuyển hướng đến trang thanh toán VNPAY
+        } catch (error) {
+            console.error("Error in payment:", error);
+            message.error("Có lỗi xảy ra trong quá trình thanh toán");
+        }
+    };
 
     const isValidDate = (dateString) => {
         return dayjs(dateString, "DD-MM-YYYY", true).isValid();
@@ -524,6 +546,9 @@ const UserProfile = () => {
                                                     Hủy phòng
                                                 </button>
                                                 <button
+                                                    onClick={() =>
+                                                        handlePayment(item.id)
+                                                    }
                                                     className={`py-2 pt-3  pb-3 w-1/4 hover:bg-red-800 delay-200  px-1 bg-main text-white rounded-md`}
                                                 >
                                                     Thanh toán
