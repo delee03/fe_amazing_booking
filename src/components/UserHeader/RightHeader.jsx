@@ -15,12 +15,16 @@ import MediaQuery, { useMediaQuery } from "react-responsive";
 const RightHeader = () => {
     const isDesktop = useMediaQuery({ minWidth: 1140 });
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1139 });
-
-    const isMobile = useMediaQuery({ maxWidth: 767 });
-    const user = getLocalStorage("user");
-    console.log(user);
-
     const navigate = useNavigate();
+    const isMobile = useMediaQuery({ maxWidth: 767 });
+    const [open, setOpen] = useState(false);
+
+    const user = getLocalStorage("user");
+    // console.log(user);
+    // if (!user) {
+    //     return;
+    //     //cần trả về cái gì đó để render ra
+    // }
 
     const items = [
         {
@@ -76,6 +80,13 @@ const RightHeader = () => {
                     to={"/"}
                     className="w-full -mt-2 block py-2 px-10 text-center   rounded-md text-main hover:bg-main hover:text-white duration-300"
                     onClick={() => {
+                        if (
+                            !localStorage.getItem("user") &&
+                            !localStorage.getItem("token") &&
+                            !localStorage.getItem("role")
+                        ) {
+                            navigate("/sign-in");
+                        }
                         localStorage.removeItem("user");
                         localStorage.removeItem("token");
                         localStorage.removeItem("role");
@@ -92,8 +103,6 @@ const RightHeader = () => {
         },
     ];
 
-    console.log(user);
-    const [open, setOpen] = useState(false);
     //hàm xử lí check localStorage
 
     const handleLoggedIn = () => {

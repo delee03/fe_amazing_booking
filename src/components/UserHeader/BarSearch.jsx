@@ -40,7 +40,7 @@ const BarSearch = ({ show }) => {
         layViTri
             .getListLocation()
             .then((res) => {
-                const data = res.data;
+                const data = res.data.content;
                 console.log(data);
                 dispatch(setdsViTri(data));
             })
@@ -51,7 +51,7 @@ const BarSearch = ({ show }) => {
 
     // Lắng nghe sự thay đổi của valueSearch để filter dữ liệu create 1 new array để render ra dropdown
     useEffect(() => {
-        let filterItems = [...dsViTri];
+        let filterItems = Array.isArray(dsViTri) ? [...dsViTri] : [];
         if (debounce) {
             filterItems = [...dsViTri].filter((item) =>
                 removeVietnameseTones(item.city)

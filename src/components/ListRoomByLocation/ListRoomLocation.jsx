@@ -13,29 +13,31 @@ import { fetchGetLocationById } from "../../redux/viTriSlice";
 import MapLocation from "./MapLocation";
 
 const ListRoomLocation = () => {
+    const navigate = useNavigate();
     const valueSearch = useSelector((state) => state.viTriReducer.valueSearch);
     const [searchParam, setSearchParam] = useSearchParams();
     const [loading, setLoading] = useState(true);
-    const [location, setLocation] = useState(null);
+    const [location, setLocation] = useState({});
     let idLocation = searchParam.get("idLocation");
-    // console.log(idLocation);
+    console.log(idLocation);
     const [rooms, setRooms] = useState([]);
     const dispatch = useDispatch();
     const roomLiked = useSelector(
         (state) => state.roomFavoriteReducer.roomFavorite
     );
-    //  console.log(roomLiked);
+    console.log(roomLiked);
 
-    const navigate = useNavigate();
     const handleIsFavoriteRoom = (id) => {
-        const check = roomLiked.find((item) => item.id === id);
+        const check = roomLiked?.find((item) => item.id === id);
         if (check) {
             return true;
         }
         return false;
     };
 
-    const locationData = useSelector((state) => state.viTriReducer.viTriId);
+    const locationData = useSelector(
+        (state) => state.viTriReducer.viTriLocation
+    );
     console.log(locationData);
 
     useEffect(() => {
@@ -49,23 +51,27 @@ const ListRoomLocation = () => {
             .then((res) => {
                 const data = res.data.content;
                 setRooms(data);
-
-                console.log(res.data);
+                console.log(data);
             })
             .catch((error) => {
+                message.error(
+                    "Lỗi kết nối đến server, vui lòng thử lại sau",
+                    3
+                );
                 console.log(error);
             });
 
         // Kiểm tra và chuyển đổi `latitude` và `longitude` thành số
         if (locationData.latitude && locationData.longitude) {
             setLocation({
+                ...location,
                 latitude: parseFloat(locationData.latitude),
                 longitude: parseFloat(locationData.longitude),
                 city: locationData.city,
             });
             setLoading(false);
         }
-    }, [idLocation, locationData]);
+    }, [idLocation, dispatch, locationData.latitude]);
     //console.log(searchParam.get("idLocation"));
     //cần có 1 useEffect để gọi api lấy danh sách phòng theo vị trí từ idLocation
     // Sử dụng useEffect để hiển thị thông báo sau khi thêm vào yêu thích
@@ -104,35 +110,9 @@ const ListRoomLocation = () => {
         }
     };
 
-    // Sử dụng useEffect để hiển thị thông báo sau khi thêm vào yêu thích
-    // useEffect(() => {
-    //     if (addedRoom) {
-    //         message.success({
-    //             content: (
-    //                 <span className="font-semibold py-4">
-    //                     Đã thêm vào phòng yêu thích của bạn.
-    //                     <a
-    //                         onClick={() => navigate(`/your-favorite-room`)}
-    //                         style={{
-    //                             textDecoration: "underline",
-    //                             cursor: "pointer",
-    //                         }}
-    //                     >
-    //                         Xem danh sách phòng
-    //                     </a>
-    //                 </span>
-    //             ),
-    //             duration: 2,
-    //         });
-
-    //         // Reset addedRoom sau khi thông báo hiển thị
-    //         setAddedRoom(null);
-    //     }
-    // }, [addedRoom]); // Chỉ chạy effect khi addedRoom thay đổi
-
     const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1280 });
     const isMobile = useMediaQuery({ maxWidth: 767 });
-
+    const dataRooms = Array.isArray(rooms) && rooms.length > 0 ? rooms : [];
     return (
         <>
             {loading && <SpinnerCustom />}
@@ -166,7 +146,7 @@ const ListRoomLocation = () => {
                                    isMobile && "px-7"
                                } grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-x-4 gap-y-14  `}
                             >
-                                {rooms?.map((item, index) => (
+                                {dataRooms.map((item, index) => (
                                     <div
                                         key={index}
                                         className="max-h-64 mb-24 w-full"

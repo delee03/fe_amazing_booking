@@ -5,8 +5,8 @@ export const getValueLocation = createAsyncThunk(
     "viTri/getValueLocation",
     async (_, thunkApi) => {
         const resolve = await layViTri.getListLocation();
-        console.log(resolve.data);
-        return resolve.data;
+        console.log(resolve);
+        return resolve.data.content;
     }
 );
 
@@ -14,13 +14,13 @@ export const fetchGetLocationById = createAsyncThunk(
     "viTri/fetchGetLocationById",
     async (id, thunkApi) => {
         const resolve = await layViTri.getLocationById(id);
-        console.log(resolve.data);
-        return resolve.data;
+        console.log(resolve);
+        return resolve.data.content;
     }
 );
 
 const initialState = {
-    viTriId: "",
+    viTriLocation: "",
     dsViTri: [],
     valueSearch: "",
 };
@@ -49,7 +49,7 @@ export const viTriSlice = createSlice({
             })
             .addCase(fetchGetLocationById.fulfilled, (state, action) => {
                 // Khi dữ liệu được load thành công từ API, cập nhật vào state
-                state.viTriId = action.payload;
+                state.viTriLocation = action.payload;
             });
     },
 });

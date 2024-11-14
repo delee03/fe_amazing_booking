@@ -20,9 +20,9 @@ const BoxSearch = () => {
 
     const [valueSearch, setValueSearch] = useState("");
     const [param, setParam] = useState(null);
-    const dsViTri = useSelector((state) => state.viTriReducer.dsViTri);
+
     const navigate = useNavigate();
-    console.log(dsViTri);
+
     //lấy dữ liệu state từ store
     const debounce = useDebounce(valueSearch, 500);
     // console.log(debounce);
@@ -52,10 +52,11 @@ const BoxSearch = () => {
         //         console.log("Lỗi khi gọi api lấy vị trí", err);
         //     });
     }, []);
-
+    const dsViTri = useSelector((state) => state.viTriReducer.dsViTri);
+    console.log(dsViTri);
     // Lắng nghe sự thay đổi của valueSearch để filter dữ liệu create 1 new array để render ra dropdown
     useEffect(() => {
-        let filterItems = [...dsViTri];
+        let filterItems = Array.isArray(dsViTri) ? [...dsViTri] : [];
         if (debounce) {
             filterItems = [...dsViTri].filter((item) =>
                 removeVietnameseTones(item.city)

@@ -9,8 +9,10 @@ export const booking = {
     delete: (id) => {
         return http.delete(`/booking/${id}`);
     },
-    getVnpayUrl: (bookingId) => {
-        return http.get(`/booking/vnpay-url/${bookingId}`);
+    getVnpayUrl: (bookingId, amount, ip) => {
+        return http.get(
+            `/booking/vnpay-url/${bookingId}?amount=${amount}&ip=${ip}`
+        );
     },
     getAllBooking: () => {
         return http.get("/booking");

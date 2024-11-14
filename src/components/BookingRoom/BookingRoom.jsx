@@ -14,16 +14,12 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
     //     console.log(date, dateString);
     // };
     const navigate = useNavigate();
-
-    console.log(giaTien, paramsId, soLuongKhach);
-    const user = getLocalStorage("user");
-
-    // console.log(user);
     const [checkInDate, setCheckInDate] = React.useState(null);
     const [checkOutDate, setCheckOutDate] = React.useState(null);
     const [soKhachChon, setSoKhachChon] = useState(1);
     const [loading, setLoading] = useState(false);
     const [soNgay, setSoNgay] = useState(0);
+    console.log(giaTien, paramsId, soLuongKhach);
 
     const handleDateChange = (dates, dateStrings) => {
         if (dates) {
@@ -58,6 +54,19 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
             return 0;
         }
     };
+    const checkUser = () => {
+        const user = getLocalStorage("user");
+        if (!user || user.length === 0) {
+            message.warning("Bạn cần đăng nhập để đặt phòng nhé!");
+            setLoading(true);
+            setTimeout(() => {
+                setLoading(false);
+                navigate("/sign-in");
+            }, 1500);
+            return;
+        }
+        console.log(user);
+    };
 
     useEffect(() => {
         const diff = handleCountDate(checkInDate, checkOutDate);
@@ -68,13 +77,9 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
 
     const hanldeBooking = () => {
         // Kiểm tra xem người dùng đã đăng nhập chưa
-        if (!user) {
-            message.warning("Bạn cần đăng nhập để đặt phòng nhé!");
-            setLoading(true);
-            setTimeout(() => {
-                setLoading(false);
-                navigate("/sign-in");
-            }, 1500);
+        checkUser();
+        if (!checkInDate || !checkOutDate) {
+            message.warning("Vui lòng chọn ngày nhận và trả phòng!");
             return;
         }
         if (checkInDate && checkOutDate && soNgay > 0) {

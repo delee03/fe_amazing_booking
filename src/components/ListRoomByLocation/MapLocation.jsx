@@ -21,23 +21,25 @@ const defaultIcon = new L.Icon({
 L.Marker.prototype.options.icon = defaultIcon;
 
 const MapLocation = ({ latitude, longitude, city }) => {
+    if (!latitude || !longitude || !city) return null;
     const position = [latitude, longitude];
 
     return (
-        <MapContainer
-            className="z-0"
-            center={position}
-            zoom={13}
-            style={{ height: "600px", width: "100%" }}
-        >
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <Marker position={position}>
-                <Popup>{city}</Popup>
-            </Marker>
-        </MapContainer>
+        /* Bản đồ sử dụng thư viện Leaflet */
+        latitude &&
+        longitude &&
+        city && (
+            <MapContainer
+                center={position}
+                zoom={13}
+                style={{ height: "400px", width: "100%" }}
+            >
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                <Marker position={position}>
+                    <Popup>{city}</Popup>
+                </Marker>
+            </MapContainer>
+        )
     );
 };
 export default MapLocation;

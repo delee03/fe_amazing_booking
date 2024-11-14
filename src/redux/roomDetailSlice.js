@@ -9,7 +9,7 @@ export const fetchAllRooms = createAsyncThunk(
     async (_, thunkApi) => {
         const response = await getRoomByLocationId.getAllRoomRealEstate();
         console.log(response);
-        return response.data;
+        return response.data.content;
     }
 );
 
@@ -18,7 +18,7 @@ export const fetchRoomById = createAsyncThunk(
     async (roomId, thunkApi) => {
         const response = await getRoomByLocationId.getRoomById(roomId);
         console.log(response);
-        return response.data;
+        return response.data.content;
     }
 );
 
@@ -37,7 +37,7 @@ export const fetchUploadImageRoom = createAsyncThunk(
         const response = await getRoomByLocationId.upLoadRoomImage(id, data);
 
         console.log(response);
-        return response.data;
+        return response.data.content;
     }
 );
 export const fetchDeleteRoom = createAsyncThunk(
@@ -57,7 +57,7 @@ export const fetchRoomPagination = createAsyncThunk(
             pageSize
         );
         console.log(response);
-        return response.data.content; // Trả về roomId để có thể sử dụng trong reducer
+        return response.data; // Trả về roomId để có thể sử dụng trong reducer
     }
 );
 export const fetchUpdateRoom = createAsyncThunk(
@@ -66,7 +66,7 @@ export const fetchUpdateRoom = createAsyncThunk(
         const response = await getRoomByLocationId.uploadRoom(id, data);
 
         console.log(response);
-        return response.data;
+        return response.data.content;
     }
 );
 

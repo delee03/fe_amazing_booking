@@ -6,7 +6,7 @@ export const getComments = createAsyncThunk(
     async (_, thunkApi) => {
         const resolve = await comment.getAllComment();
         console.log(resolve);
-        return resolve.data;
+        return resolve.data.content;
     }
 );
 

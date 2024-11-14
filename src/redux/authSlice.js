@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getLocalStorage, setLocalStorage } from "../utils/localStorage";
+import { info } from "autoprefixer";
 
 const initialState = {
     infoUser: getLocalStorage("user") || {},
@@ -10,14 +11,18 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         updateInfoUser: (state, action) => {
-            state.infoUser = action.payload;
-            localStorage.removeItem("user");
-            setLocalStorage("user", action.payload);
+            // localStorage.removeItem("user");
+            state.infoUser = { ...state.infoUser, ...action.payload };
+            //console.log(infoUser);
+            setLocalStorage("user", { ...state.infoUser, ...action.payload });
         },
         updateAvatarUser: (state, action) => {
-            state.infoUser = { ...state.infoUser, avatar: action.payload };
             localStorage.removeItem("user");
-            setLocalStorage("user", state.infoUser);
+            state.infoUser = { ...state.infoUser, ...action.payload };
+            setLocalStorage("user", {
+                ...state.infoUser,
+                ...action.payload,
+            });
         },
     },
 });

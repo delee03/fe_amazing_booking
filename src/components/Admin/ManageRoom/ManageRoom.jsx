@@ -54,7 +54,7 @@ const ManageRoom = () => {
         layViTri
             .getListLocation()
             .then((res) => {
-                const data = res.data;
+                const data = res.data.content;
                 // console.log(data);
                 dispatch(setdsViTri(data));
             })

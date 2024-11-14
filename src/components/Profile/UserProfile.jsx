@@ -24,35 +24,13 @@ import { booking } from "../../service/booking.service";
 import { useLocation } from "react-router-dom";
 
 const UserProfile = () => {
-    // const { user } = getLocalStorage("user");
+    //const user = getLocalStorage("user");
 
     const user = useSelector((state) => state.authSlice.infoUser);
     console.log(user);
 
     const dispatch = useDispatch();
     // Kiểm tra và cập nhật Redux từ localStorage khi user thay đổi
-    // useEffect(() => {
-    //     const handleStorageChange = () => {
-    //         const storedUser = getLocalStorage("user");
-    //         if (storedUser) {
-    //             dispatch(updateInfoUser(storedUser));
-    //         } else {
-    //             // Nếu không có người dùng trong localStorage (đăng xuất)
-    //             dispatch(updateInfoUser(null));
-    //         }
-    //     };
-
-    //     // Lắng nghe sự kiện storage
-    //     window.addEventListener('storage', handleStorageChange);
-
-    //     // Gọi handleStorageChange ngay khi component mount
-    //     handleStorageChange();
-
-    //     // Cleanup sự kiện khi component unmount
-    //     return () => {
-    //         window.removeEventListener('storage', handleStorageChange);
-    //     };
-    // }, [dispatch]);
 
     const { arrReservation } = useSelector((state) => state.reservationReducer);
     const [infoBooking, setInfoBooking] = useState({});
@@ -84,7 +62,7 @@ const UserProfile = () => {
                 });
         }
     }, [user?.id, arrReservation.length, dispatch]);
-
+    const [avatar, setAvatar] = useState({});
     const [step, setStep] = useState(1);
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
@@ -97,7 +75,6 @@ const UserProfile = () => {
             setLoading(false);
         }, 500);
     };
-    const [avatar, setAvatar] = useState(null);
 
     // const handleSubmit = (e) => {
     //     e.preventDefault();
@@ -108,10 +85,17 @@ const UserProfile = () => {
     //     setStep(1);
     //     setOpen(false);
     // };
+
+    async function getUserIp() {
+        const response = await fetch("https://api.ipify.org?format=json");
+        const data = await response.json();
+        return data.ip;
+    }
     const handlePayment = async (bookingId) => {
         try {
             const response = await booking.getVnpayUrl(bookingId);
             const paymentUrl = response.data; // URL thanh toán từ backend
+            console.log(paymentUrl);
             window.location.href = paymentUrl; // Chuyển hướng đến trang thanh toán VNPAY
         } catch (error) {
             console.error("Error in payment:", error);
@@ -135,7 +119,7 @@ const UserProfile = () => {
             .uploadAvatar(user.id, formData)
             .then((res) => {
                 console.log(res);
-                dispatch(updateAvatarUser(res.data.avatar));
+                dispatch(updateAvatarUser(res.data.content.user));
                 setStep(1);
                 setOpen(false);
                 message.success("Cập nhật ảnh thành công");
@@ -496,7 +480,10 @@ const UserProfile = () => {
                                                     .split(",")
                                                     .map((item, index) => {
                                                         return (
-                                                            <p className="capitalize">
+                                                            <p
+                                                                className="capitalize"
+                                                                key={index}
+                                                            >
                                                                 {item}
                                                             </p>
                                                         );
