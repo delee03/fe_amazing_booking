@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { DatePicker, Space, message } from "antd";
+import { DatePicker, Modal, Space, message } from "antd";
 const { RangePicker } = DatePicker;
 import { getLocalStorage } from "../../utils/localStorage";
 import dayjs from "dayjs";
+
 import { convertCurrency } from "../../common/convertCurrency";
 import { booking } from "../../service/booking.service";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
     // const onChange = (date, dateString) => {
     //     console.log(date, dateString);
     // };
+
     const navigate = useNavigate();
     const [checkInDate, setCheckInDate] = React.useState(null);
     const [checkOutDate, setCheckOutDate] = React.useState(null);
@@ -66,6 +68,7 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
             return;
         }
         console.log(user);
+        return user;
     };
 
     useEffect(() => {
@@ -77,7 +80,7 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
 
     const hanldeBooking = () => {
         // Kiểm tra xem người dùng đã đăng nhập chưa
-        checkUser();
+        const user = checkUser();
         if (!checkInDate || !checkOutDate) {
             message.warning("Vui lòng chọn ngày nhận và trả phòng!");
             return;
