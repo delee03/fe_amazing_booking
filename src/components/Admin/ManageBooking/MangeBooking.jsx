@@ -6,6 +6,7 @@ import {
     fetchAllBookings,
     fetchDeleteBooking,
 } from "../../../redux/reservationSlice";
+import formatDate from "../../../utils/formatDate";
 
 const MangeBooking = () => {
     const navigate = useNavigate();
@@ -18,21 +19,28 @@ const MangeBooking = () => {
     const arrBooking = useSelector(
         (state) => state.reservationReducer.arrAllBooking
     );
+    console.log(arrBooking);
     const arrNewBooking = arrBooking.map((item) => {
         const dateIn = new Date(item.checkIn);
-        const formattedDate = `${dateIn.getHours()}:${dateIn.getMinutes()} ${dateIn.getDate()}/${
-            dateIn.getMonth() + 1
-        }/${dateIn.getFullYear()}`;
+        const formattedDateIn = formatDate.formatDateAndTime(dateIn);
+
         const dateOut = new Date(item.checkOut);
-        const formattedDateOut = `${dateOut.getHours()}:${dateOut.getMinutes()} ${dateOut.getDate()}/${
-            dateOut.getMonth() + 1
-        }/${dateOut.getFullYear()}`;
+        const formattedDateOut = formatDate.formatDateAndTime(dateOut);
+
+        const createdAt = new Date(item.createdAt);
+        const formattedCreatedAt = formatDate.formatDateAndTime(createdAt);
+        const updatedAt = new Date(item.updatedAt);
+        const formattedUpdatedAt = formatDate.formatDateAndTime(updatedAt);
+
         return {
             ...item,
-            formattedDate,
+            formattedDateIn,
             formattedDateOut,
+            createdAt: formattedCreatedAt,
+            updatedAt: formattedUpdatedAt,
         };
     });
+    console.log(arrNewBooking);
 
     const columns = [
         {
@@ -44,7 +52,7 @@ const MangeBooking = () => {
 
         {
             title: "Ngày nhận phòng",
-            dataIndex: "formattedDate",
+            dataIndex: "formattedDateIn",
             key: "checkIn",
         },
 
@@ -106,10 +114,17 @@ const MangeBooking = () => {
                     <button
                         onClick={(e) => {
                             e.stopPropagation(); // Ngăn sự kiện onRow khi nhấn nút
-                            // handleOpenUpdateModal(record);
                             handleEdit(record);
                         }}
-                        className="bg-yellow-500/85 text-white py-2 px-5"
+                        className="bg-sky-500/85 text-white rounded-xl   py-2 px-5"
+                    >
+                        Xem
+                    </button>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation(); // Ngăn sự kiện onRow khi nhấn nút
+                        }}
+                        className="bg-yellow-500/85 text-white rounded-xl py-2 px-5"
                     >
                         Sửa
                     </button>
@@ -119,7 +134,7 @@ const MangeBooking = () => {
                             message.success({ content: "Xóa thành công" });
                             handleDelete(record.id);
                         }}
-                        className="bg-red-500/85 text-white py-2 px-5"
+                        className="bg-red-500/85 text-white rounded-xl py-2 px-5"
                     >
                         Xóa
                     </button>
@@ -159,13 +174,7 @@ const MangeBooking = () => {
             <h1 className="text-center text-main text-3xl pb-8 font-semibold">
                 Quản lí đặt phòng
             </h1>
-            <Table
-                columns={columns}
-                onRow={(record) => ({
-                    onClick: () => handleEdit(record),
-                })}
-                dataSource={arrNewBooking}
-            />
+            <Table columns={columns} dataSource={arrNewBooking} />
 
             <Modal
                 title="Chi tiết đặt phòng"
@@ -201,7 +210,7 @@ const MangeBooking = () => {
                             </div>
                             <div className="flex justify-between items-center gap-3 mb-3 w-full">
                                 <strong>Ngày nhận phòng:</strong>{" "}
-                                <p> {record.formattedDate}</p>
+                                <p> {record.formattedDateIn}</p>
                             </div>
                             <div className="flex justify-between items-center gap-3 mb-3 w-full">
                                 <strong>Ngày trả phòng:</strong>{" "}

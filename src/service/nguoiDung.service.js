@@ -8,7 +8,7 @@ export const nguoiDungService = {
     // NV2 : Tạo hàm xử lí gọi API xóa người dùng
     // DELETE
     deleteUser: (id) => {
-        return http.delete(`/users?id=${id}`);
+        return http.delete(`/users/${id}`);
     },
     // POST
     createUser: (data) => {

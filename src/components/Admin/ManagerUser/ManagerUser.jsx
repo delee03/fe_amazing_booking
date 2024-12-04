@@ -10,6 +10,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import { UserIcon2 } from "../../../Icon/IconStorage";
 
 const ManagerUser = () => {
     const { listNguoiDung } = useSelector((state) => state.nguoiDungSlice);
@@ -199,12 +200,16 @@ const ManagerUser = () => {
             dataIndex: "avatar",
             key: "avatar",
             width: 100,
-            render: (text) => (
-                <img
-                    className="rounded-full  w-12 h-12 object-cover"
-                    src={text ? text : "https//via.placeholder.com/100"}
-                />
-            ),
+            render: (text) =>
+                text ? (
+                    <img
+                        className="rounded-full w-12 h-12 object-cover"
+                        src={text}
+                        alt="avatar"
+                    />
+                ) : (
+                    <UserIcon2 width="4em" height="4em" />
+                ),
         },
 
         {
@@ -252,9 +257,18 @@ const ManagerUser = () => {
                     </button>
                     <button
                         onClick={() => {
-                            nguoiDungService.deleteUser(record.id);
-                            message.success({ content: "Xóa thành công" });
-                            dispatch(getValueUserApi());
+                            nguoiDungService
+                                .deleteUser(record.id)
+                                .then(() => {
+                                    message.success({
+                                        content: "Xóa thành công",
+                                    });
+                                    dispatch(getValueUserApi());
+                                })
+                                .catch((error) => {
+                                    message.error({ content: "Xóa thất bại" });
+                                    console.log(error);
+                                });
                         }}
                         className="bg-red-500/85 text-white py-2 px-5"
                     >
