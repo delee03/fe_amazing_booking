@@ -110,7 +110,7 @@ const ManageRoom = () => {
                     label: (
                         <Link
                             onClick={() => {
-                                console.log(item.id);
+                                //   console.log(item.id);
 
                                 setLocationId(item.id);
                             }}
@@ -211,7 +211,7 @@ const ManageRoom = () => {
             name: "",
             soKhach: 0,
             soLuong: 0,
-            tienNghi: 0,
+            tienNghi: "",
             description: "",
             price: 0,
             locationId: "",
@@ -401,6 +401,7 @@ const ManageRoom = () => {
                                     />
                                     <InputCustom
                                         label={"Tiện nghi"}
+                                        typeInput="text"
                                         placehoder={"Các tiện nghi"}
                                         name="tienNghi"
                                         error={errors.tienNghi}

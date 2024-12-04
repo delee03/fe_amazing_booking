@@ -16,10 +16,10 @@ export const getRoomByLocationId = {
         return http.post(`/rooms/avatar/${idRoom}`, formData);
     },
     createRoom: (data) => {
-        return http.post(`/phong-thue`, data, {
+        return http.post(`/rooms`, data, {
             headers: {
                 token: getTokeStorage("token") || "",
-            },
+            }, // set token
         });
     },
     deleteRoom: (id) => {

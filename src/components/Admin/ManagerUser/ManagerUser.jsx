@@ -198,7 +198,13 @@ const ManagerUser = () => {
             title: "Avatar",
             dataIndex: "avatar",
             key: "avatar",
-            width: 400,
+            width: 100,
+            render: (text) => (
+                <img
+                    className="rounded-full  w-12 h-12 object-cover"
+                    src={text ? text : "https//via.placeholder.com/100"}
+                />
+            ),
         },
 
         {
