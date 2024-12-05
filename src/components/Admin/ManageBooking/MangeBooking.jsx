@@ -12,6 +12,7 @@ import ModelDetail from "./ModelDetail";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import InputCustom from "../../Custom/InputCustom";
+import { booking } from "../../../service/booking.service";
 
 const MangeBooking = () => {
     const [open, setOpen] = React.useState(false);
@@ -54,6 +55,8 @@ const MangeBooking = () => {
         };
     });
     // console.log(arrNewBooking);
+    // checkIn: formatDate.formatDateAndTime(new Date(record.checkIn)),
+    // checkOut: formatDate.formatDateAndTime(new Date(record.checkOut)),
     const showUpdateModal = (record) => {
         setRecord(record); // Lưu thông tin booking vào state
         setLoading(true);
@@ -149,11 +152,10 @@ const MangeBooking = () => {
                     </button>
                     <button
                         onClick={(e) => {
+                            console.log("first", record);
                             e.stopPropagation(); // Ngăn sự kiện onRow khi nhấn nút
                             showUpdateModal(record);
                             showLoading();
-
-                            console.log("first", record);
                         }}
                         className="bg-yellow-500/85 text-white rounded-xl py-2 px-5"
                     >
@@ -175,7 +177,7 @@ const MangeBooking = () => {
     ];
     const options = [
         {
-            value: 0,
+            value: "OTHER",
             label: (
                 <Link
                     onClick={() => {
@@ -194,7 +196,7 @@ const MangeBooking = () => {
             ),
         },
         {
-            value: 1,
+            value: "CREDIT_CARD",
             label: (
                 <Link
                     onClick={() => {
@@ -213,7 +215,7 @@ const MangeBooking = () => {
             ),
         },
         {
-            value: 2,
+            value: "PAYPAL",
             label: (
                 <Link
                     onClick={() => {
@@ -232,7 +234,7 @@ const MangeBooking = () => {
             ),
         },
         {
-            value: 3,
+            value: "MOMO",
             label: (
                 <Link
                     onClick={() => {
@@ -251,7 +253,7 @@ const MangeBooking = () => {
             ),
         },
         {
-            value: 4,
+            value: "VNPAY",
             label: (
                 <Link
                     onClick={() => {
@@ -265,12 +267,12 @@ const MangeBooking = () => {
                         className="w-12 h-12 object-cover rounded-lg"
                     />
 
-                    <h3>Momo</h3>
+                    <h3>VNPAY</h3>
                 </Link>
             ),
         },
         {
-            value: 5,
+            value: "BANK_TRANSFER",
             label: (
                 <Link
                     onClick={() => {
@@ -299,7 +301,7 @@ const MangeBooking = () => {
             roomId: "",
             guests: 0,
             paymentMethod: "",
-            paymentStatus: false,
+            paymentStatus: "false",
         },
         validationSchema: yup.object({
             checkIn: yup.string().required("Không được để trống"),
@@ -310,9 +312,44 @@ const MangeBooking = () => {
             paymentStatus: yup.boolean().required("Không được để trống"),
         }),
         onSubmit: (values) => {
-            console.log(values);
+            // console.log(values);
             // Gọi API cập nhật booking
-            dispatch(fetchUpdateBooking(values));
+            const {
+                checkIn,
+                checkOut,
+                totalPrice,
+                guests,
+                paymentMethod,
+                paymentStatus,
+            } = values;
+            // const checkInFormat = formatDate.formatDateToISO(checkIn);
+            // const checkOutFormat = formatDate.formatDateToISO(checkOut);
+            const valuesNew = {
+                ...values,
+                // checkIn: checkInFormat,
+                // checkOut: checkOutFormat,
+                paymentStatus: paymentStatus === "true" ? true : false,
+            };
+            console.log("dữ liệu đã được cập nhật", valuesNew);
+            // booking
+            //     .update(record.id, valuesNew)
+            //     .then((res) => {
+            //         console.log(res);
+            //         dispatch(fetchAllBookings());
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
+            dispatch(fetchUpdateBooking({ id: record.id, data: valuesNew }))
+                .unwrap()
+                .then(() => {
+                    console.log("Cập nhật thành công");
+                    dispatch(fetchAllBookings());
+                })
+                .catch((error) => {
+                    console.log("Cập nhật thất bại", error);
+                });
+
             message.success("Cập nhật thành công");
             setOpen(false);
             formik.resetForm();
@@ -377,6 +414,7 @@ const MangeBooking = () => {
                         formik.validateForm().then((errors) => {
                             //check validation before submit
                             if (Object.keys(errors).length === 0) {
+                                formik.handleSubmit();
                                 console.log(
                                     "No validation errors, submitting form"
                                 );
@@ -390,6 +428,7 @@ const MangeBooking = () => {
                         label={"Ngày nhận phòng"}
                         placehoder={"Ngày nhận phòng"}
                         name="checkIn"
+                        pointer="pointer-events-none"
                         error={errors.checkIn}
                         touched={touched.checkIn}
                         onChange={handleChange}
@@ -399,9 +438,9 @@ const MangeBooking = () => {
                     />
                     <InputCustom
                         label={"Ngày trả phòng"}
-                        typeInput="date"
                         placehoder={"Ngày trả phòng"}
                         name="checkOut"
+                        pointer="pointer-events-none"
                         error={errors.checkOut}
                         touched={touched.checkOut}
                         onChange={handleChange}
@@ -414,6 +453,7 @@ const MangeBooking = () => {
                             label={"ID User"}
                             placehoder={"ID User"}
                             name="userId"
+                            pointer={"pointer-events-none"}
                             error={errors.userId}
                             touched={touched.userId}
                             onChange={handleChange}
@@ -425,6 +465,7 @@ const MangeBooking = () => {
                             label={"ID Room"}
                             placehoder={"ID Room"}
                             name="roomId"
+                            pointer={"pointer-events-none"}
                             error={errors.roomId}
                             touched={touched.roomId}
                             onChange={handleChange}
@@ -435,7 +476,6 @@ const MangeBooking = () => {
                     </div>
                     <div className="flex justify-between w-full gap-4 items-center">
                         <InputCustom
-                            typeInput="number"
                             label={"Tổng tiền"}
                             placehoder={"Tổng tiền"}
                             name="totalPrice"
@@ -443,7 +483,7 @@ const MangeBooking = () => {
                             touched={touched.totalPrice}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={values.totalPrice}
+                            value={values.totalPrice.toLocaleString() + " VND"}
                             id={"totalPrice"}
                         />
                         <InputCustom
@@ -460,14 +500,19 @@ const MangeBooking = () => {
                         />
                     </div>
                     <div className="flex justify-between w-full gap-2 items-center">
-                        <div className="-ml-10 py-4 min-w-40 min-h-10">
+                        <div className="-ml-10 py-4 min-w-40">
+                            <label className="ml-10 font-semibold " htmlFor="">
+                                Phương thức thanh toán
+                            </label>
                             <Select
-                                className="py-4 px-10 w-full h-full"
+                                direction="rtl"
+                                className=" px-10 py-2 w-full h-full"
                                 placeholder="Phương thức thanh toán"
                                 value={values.paymentMethod}
-                                onChange={(value) =>
-                                    setFieldValue("paymentMethod", value)
-                                }
+                                onChange={(value) => {
+                                    console.log(value);
+                                    setFieldValue("paymentMethod", value);
+                                }}
                                 options={options}
                             />
                         </div>
@@ -505,7 +550,7 @@ const MangeBooking = () => {
                     </div>
                 </form>
             </Modal>
-            ;
+
             <h1 className="text-center text-main text-3xl pb-8 font-semibold">
                 Quản lí đặt phòng
             </h1>

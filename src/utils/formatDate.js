@@ -11,6 +11,12 @@ const formatDate = {
         }/${date.getFullYear()}`;
         return formattedDate;
     },
+    //hàm chuyển ngược từ dạng DD/MM/YYYY sang dạng Date ISOString
+    formatDateToISO: (dateString) => {
+        const dateArr = dateString.split("/");
+        const date = new Date(dateArr[2], dateArr[1] - 1, dateArr[0]);
+        return date.toISOString();
+    },
 };
 
 export default formatDate;
