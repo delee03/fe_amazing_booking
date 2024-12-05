@@ -22,9 +22,6 @@ const MangeBooking = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const showLoading = () => {
         setOpen(true);
-        setLoading(true);
-
-        // Simple loading mock. You should add cleanup logic in real world.
         setTimeout(() => {
             setLoading(false);
         }, 500);
@@ -57,6 +54,20 @@ const MangeBooking = () => {
         };
     });
     // console.log(arrNewBooking);
+    const showUpdateModal = (record) => {
+        setRecord(record); // Lưu thông tin booking vào state
+        setLoading(true);
+        formik.setValues({
+            checkIn: record.checkIn,
+            checkOut: record.checkOut,
+            totalPrice: record.totalPrice,
+            userId: record.userId,
+            roomId: record.roomId,
+            guests: record.guests,
+            paymentMethod: record.paymentMethod,
+            paymentStatus: record.paymentStatus,
+        });
+    };
 
     const columns = [
         {
@@ -138,10 +149,10 @@ const MangeBooking = () => {
                     </button>
                     <button
                         onClick={(e) => {
-                            e.preventDefault();
-                            setOpen(true);
+                            e.stopPropagation(); // Ngăn sự kiện onRow khi nhấn nút
+                            showUpdateModal(record);
                             showLoading();
-                            setRecord(record);
+
                             console.log("first", record);
                         }}
                         className="bg-yellow-500/85 text-white rounded-xl py-2 px-5"
@@ -281,14 +292,14 @@ const MangeBooking = () => {
 
     const formik = useFormik({
         initialValues: {
-            checkIn: record.checkIn,
-            checkOut: record.checkOut,
-            totalPrice: record.totalPrice,
-            userId: record.userId,
-            roomId: record.roomId,
-            guests: record.guests,
-            paymentMethod: record.paymentMethod,
-            paymentStatus: record.paymentStatus,
+            checkIn: "",
+            checkOut: "",
+            totalPrice: 0,
+            userId: "",
+            roomId: "",
+            guests: 0,
+            paymentMethod: "",
+            paymentStatus: false,
         },
         validationSchema: yup.object({
             checkIn: yup.string().required("Không được để trống"),
@@ -329,155 +340,6 @@ const MangeBooking = () => {
         onChange,
         handleSubmit,
     } = formik;
-    const handleUpdateBooking = (bookingId, record) => {
-        <Modal
-            loading={loading}
-            title="Cập nhật thông tin đặt phòng"
-            footer={null}
-            open={open}
-            onCancel={() => {
-                setOpen(false);
-            }}
-        >
-            <form
-                action=""
-                className="mt-5"
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    console.log("Form submission attempted");
-                    console.log(values);
-                    formik.validateForm().then((errors) => {
-                        //check validation before submit
-                        if (Object.keys(errors).length === 0) {
-                            console.log(
-                                "No validation errors, submitting form"
-                            );
-                        } else {
-                            console.log("Validation Errors:", errors); // Log validation errors to debug
-                        }
-                    });
-                }}
-            >
-                <InputCustom
-                    label={"Ngày nhận phòng"}
-                    placehoder={"Ngày nhận phòng"}
-                    name="checkIn"
-                    error={errors.checkIn}
-                    touched={touched.checkIn}
-                    onChange={handleChange}
-                    value={values.checkIn}
-                    onBlur={handleBlur}
-                    id={"checkIn"}
-                />
-                <InputCustom
-                    label={"Ngày trả phòng"}
-                    typeInput="date"
-                    placehoder={"Ngày trả phòng"}
-                    name="checkOut"
-                    error={errors.checkOut}
-                    touched={touched.checkOut}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.checkOut}
-                    id={"checkOut"}
-                />
-                <div className="flex justify-between w-full gap-4">
-                    <InputCustom
-                        label={"ID User"}
-                        placehoder={"ID User"}
-                        name="userId"
-                        error={errors.userId}
-                        touched={touched.userId}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.userId}
-                        id={"userId"}
-                    />
-                    <InputCustom
-                        label={"ID Room"}
-                        placehoder={"ID Room"}
-                        name="roomId"
-                        error={errors.roomId}
-                        touched={touched.roomId}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.roomId}
-                        id={"roomId"}
-                    />
-                </div>
-                <div className="flex justify-between w-full gap-4 items-center">
-                    <InputCustom
-                        typeInput="number"
-                        label={"Tổng tiền"}
-                        placehoder={"Tổng tiền"}
-                        name="totalPrice"
-                        error={errors.totalPrice}
-                        touched={touched.totalPrice}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.totalPrice}
-                        id={"totalPrice"}
-                    />
-                    <InputCustom
-                        label={"Số khách"}
-                        typeInput="number"
-                        placehoder={"Số khách"}
-                        name="guests"
-                        error={errors.guests}
-                        touched={touched.guests}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.guests}
-                        id={"guests"}
-                    />
-                </div>
-                <div className="flex justify-between w-full gap-4 items-center">
-                    <div className="mr-10 py-8 min-w-80 min-h-10">
-                        <Select
-                            className="py-4 px-10 w-full h-full"
-                            placeholder="Phương thức thanh toán"
-                            value={values.paymentMethod}
-                            onChange={(value) =>
-                                setFieldValue("paymentMethod", value)
-                            }
-                            options={options}
-                        />
-                    </div>
-                    <InputCustom
-                        label={"Trạng thái"}
-                        placehoder={"Trạng thái thanh toán"}
-                        name="paymentStatus"
-                        error={errors.paymentStatus}
-                        touched={touched.paymentStatus}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.paymentStatus}
-                        id={"paymentStatus"}
-                    />
-                </div>
-
-                <div className="flex justify-end p-3 gap-3">
-                    <button
-                        type="submit"
-                        // onClick={() => setStep(step + 1)}
-                        className="bg-main px-5 font-semibold text-white py-2 rounded-lg"
-                    >
-                        Cập nhật
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setOpen(false);
-                            formik.resetForm();
-                        }}
-                        className="text-main border border-red-500 bg-white px-5 font-semibold  py-2 rounded-lg"
-                    >
-                        Hủy
-                    </button>
-                </div>
-            </form>
-        </Modal>;
-    };
 
     const handleDelete = async (id) => {
         try {
@@ -496,7 +358,154 @@ const MangeBooking = () => {
 
     return (
         <>
-            {open && handleUpdateBooking(record.id, record)}
+            <Modal
+                loading={loading}
+                title="Cập nhật thông tin đặt phòng"
+                footer={null}
+                open={open}
+                onCancel={() => {
+                    setOpen(false);
+                }}
+            >
+                <form
+                    action=""
+                    className="mt-5"
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        console.log("Form submission attempted");
+                        console.log(values);
+                        formik.validateForm().then((errors) => {
+                            //check validation before submit
+                            if (Object.keys(errors).length === 0) {
+                                console.log(
+                                    "No validation errors, submitting form"
+                                );
+                            } else {
+                                console.log("Validation Errors:", errors); // Log validation errors to debug
+                            }
+                        });
+                    }}
+                >
+                    <InputCustom
+                        label={"Ngày nhận phòng"}
+                        placehoder={"Ngày nhận phòng"}
+                        name="checkIn"
+                        error={errors.checkIn}
+                        touched={touched.checkIn}
+                        onChange={handleChange}
+                        value={values.checkIn}
+                        onBlur={handleBlur}
+                        id={"checkIn"}
+                    />
+                    <InputCustom
+                        label={"Ngày trả phòng"}
+                        typeInput="date"
+                        placehoder={"Ngày trả phòng"}
+                        name="checkOut"
+                        error={errors.checkOut}
+                        touched={touched.checkOut}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.checkOut}
+                        id={"checkOut"}
+                    />
+                    <div className="flex justify-between w-full gap-4">
+                        <InputCustom
+                            label={"ID User"}
+                            placehoder={"ID User"}
+                            name="userId"
+                            error={errors.userId}
+                            touched={touched.userId}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.userId}
+                            id={"userId"}
+                        />
+                        <InputCustom
+                            label={"ID Room"}
+                            placehoder={"ID Room"}
+                            name="roomId"
+                            error={errors.roomId}
+                            touched={touched.roomId}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.roomId}
+                            id={"roomId"}
+                        />
+                    </div>
+                    <div className="flex justify-between w-full gap-4 items-center">
+                        <InputCustom
+                            typeInput="number"
+                            label={"Tổng tiền"}
+                            placehoder={"Tổng tiền"}
+                            name="totalPrice"
+                            error={errors.totalPrice}
+                            touched={touched.totalPrice}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.totalPrice}
+                            id={"totalPrice"}
+                        />
+                        <InputCustom
+                            label={"Số khách"}
+                            typeInput="number"
+                            placehoder={"Số khách"}
+                            name="guests"
+                            error={errors.guests}
+                            touched={touched.guests}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.guests}
+                            id={"guests"}
+                        />
+                    </div>
+                    <div className="flex justify-between w-full gap-2 items-center">
+                        <div className="-ml-10 py-4 min-w-40 min-h-10">
+                            <Select
+                                className="py-4 px-10 w-full h-full"
+                                placeholder="Phương thức thanh toán"
+                                value={values.paymentMethod}
+                                onChange={(value) =>
+                                    setFieldValue("paymentMethod", value)
+                                }
+                                options={options}
+                            />
+                        </div>
+                        <InputCustom
+                            label={"Trạng thái"}
+                            placehoder={"Trạng thái thanh toán"}
+                            name="paymentStatus"
+                            error={errors.paymentStatus}
+                            touched={touched.paymentStatus}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.paymentStatus}
+                            id={"paymentStatus"}
+                        />
+                    </div>
+
+                    <div className="flex justify-end p-3 gap-3">
+                        <button
+                            type="submit"
+                            // onClick={() => setStep(step + 1)}
+                            className="bg-main px-5 font-semibold text-white py-2 rounded-lg"
+                        >
+                            Cập nhật
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setOpen(false);
+                                formik.resetForm();
+                            }}
+                            className="text-main border border-red-500 bg-white px-5 font-semibold  py-2 rounded-lg"
+                        >
+                            Hủy
+                        </button>
+                    </div>
+                </form>
+            </Modal>
+            ;
             <h1 className="text-center text-main text-3xl pb-8 font-semibold">
                 Quản lí đặt phòng
             </h1>
