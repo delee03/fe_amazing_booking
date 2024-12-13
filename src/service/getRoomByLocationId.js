@@ -13,12 +13,16 @@ export const getRoomByLocationId = {
         return http.get(`/rooms/room-by-id/${id}`);
     },
     upLoadRoomImage: (idRoom, formData) => {
-        return http.post(`/rooms/avatar/${idRoom}`, formData);
+        return http.post(`/rooms/avatar/${idRoom}`, formData, {
+            headers: {
+                Authorization: `Bearer ${getTokeStorage("token") || ""}`,
+            },
+        });
     },
     createRoom: (data) => {
         return http.post(`/rooms`, data, {
             headers: {
-                token: getTokeStorage("token") || "",
+                Authorization: `Bearer ${getTokeStorage("token") || ""}`,
             }, // set token
         });
     },

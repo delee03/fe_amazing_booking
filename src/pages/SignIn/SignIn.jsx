@@ -61,17 +61,25 @@ const SignIn = () => {
             authService
                 .signIn(values)
                 .then((res) => {
-                    setLocalStorage("user", res.data.content.user);
-                    setLocalStorage("role", res.data.content.user.role);
-                    setLocalStorage("token", res.data.token); //check role user or admin từ token
-                    message.success("Đăng nhập thành công", 2);
-                    dispatch(updateInfoUser(res.data.content.user));
-                    navigate("/");
                     console.log(res);
+                    if (res.data.content?.user) {
+                        message.success("Đăng nhập thành công", 2);
+                        setLocalStorage("user", res.data.content.user);
+                        setLocalStorage("role", res.data.content.user.role);
+                        setLocalStorage("token", res.data.token); //check role user or admin từ token
+
+                        dispatch(updateInfoUser(res.data.content.user));
+                        navigate("/");
+                    } else {
+                        message.error(
+                            res.data.message + ` ${res.data.content?.message}`,
+                            2
+                        );
+                    }
                 })
                 .catch((err) => {
                     console.log(err);
-                    message.error(err.response.data.message, 2);
+                    message.error(err.data.content.message, 2);
                 });
         },
     });

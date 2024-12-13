@@ -62,7 +62,7 @@ const ListRoomLocation = () => {
             });
 
         // Kiểm tra và chuyển đổi `latitude` và `longitude` thành số
-        if (locationData.latitude && locationData.longitude) {
+        if (locationData?.latitude && locationData?.longitude) {
             setLocation({
                 ...location,
                 latitude: parseFloat(locationData.latitude),
@@ -71,7 +71,7 @@ const ListRoomLocation = () => {
             });
             setLoading(false);
         }
-    }, [idLocation, dispatch, locationData.latitude]);
+    }, [idLocation, dispatch, locationData?.latitude]);
     //console.log(searchParam.get("idLocation"));
     //cần có 1 useEffect để gọi api lấy danh sách phòng theo vị trí từ idLocation
     // Sử dụng useEffect để hiển thị thông báo sau khi thêm vào yêu thích
