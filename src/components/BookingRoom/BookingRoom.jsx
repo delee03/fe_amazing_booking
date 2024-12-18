@@ -115,7 +115,7 @@ const BookingRoom = ({ giaTien, paramsId, soLuongKhach }) => {
                     checkOut: formattedCheckOutDate,
                     guests: soKhachChon,
                     totalPrice: giaTien * soNgay,
-                    paymentMethod: "CREDIT_CARD",
+                    paymentMethod: "BANK_TRANSFER",
                     paymentStatus: false,
                 })
                 .then((res) => {
