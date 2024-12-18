@@ -114,7 +114,7 @@ const AdminLogin = () => {
                     </button>
                     {/* Header */}
                     <h2 className="text-center text-xl font-semibold mb-6">
-                        Nào hãy cho tôi thấy bạn là admin nào
+                        Truy cập trang điều khiển admin
                     </h2>
                     <div className="border-b-2 mb-2"></div>
                     <form action="" onSubmit={handleSubmit}>

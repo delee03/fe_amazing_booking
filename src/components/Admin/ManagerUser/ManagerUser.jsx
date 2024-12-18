@@ -11,6 +11,7 @@ import * as yup from "yup";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { UserIcon2 } from "../../../Icon/IconStorage";
+import formatDate from "../../../utils/formatDate";
 
 const ManagerUser = () => {
     const { listNguoiDung } = useSelector((state) => state.nguoiDungSlice);
@@ -223,6 +224,7 @@ const ManagerUser = () => {
             dataIndex: "birthday",
             key: "birthday",
             width: 200,
+            render: (text) => formatDate.formatDayOnly(new Date(text)),
         },
 
         {

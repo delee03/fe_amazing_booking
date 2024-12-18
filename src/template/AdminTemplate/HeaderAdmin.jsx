@@ -3,6 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { getLocalStorage } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
+import formatDate from "../../utils/formatDate";
 
 const HeaderAdmin = () => {
     const user = useSelector((state) => state.authSlice.infoUser);
@@ -21,7 +22,10 @@ const HeaderAdmin = () => {
                     <div className="py-2 px-3">ID: {user.id}</div>
                     <div className="py-2 px-3">Name: {user.name}</div>
                     <div className="py-2 px-3">Email: {user.email}</div>
-                    <div className="py-2 px-3">Birthday: {user.birthday}</div>
+                    <div className="py-2 px-3">
+                        Birthday:{" "}
+                        {formatDate.formatDayOnly(new Date(user.birthday))}
+                    </div>
                     <div className="py-2 px-3">Phone: {user.phone}</div>
                     <div className="py-2 px-3">
                         Role: {user.role ? "ADMIN" : ""}
