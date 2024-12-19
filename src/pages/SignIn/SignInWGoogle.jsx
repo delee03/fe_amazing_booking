@@ -22,9 +22,12 @@ const SignInGoogle = () => {
             console.log(googleToken);
 
             // Gửi Google token đến backend
-            const res = await axios.post("http://localhost:3000/auth/google", {
-                token: googleToken,
-            });
+            const res = await axios.post(
+                "http://http://booking-alb-1209022085.ap-southeast-1.elb.amazonaws.com/auth/google",
+                {
+                    token: googleToken,
+                }
+            );
 
             // Xử lý phản hồi từ backend và lưu vào localStorage
             const { user, token } = res.data.content;

@@ -1,6 +1,8 @@
-import { Skeleton } from "antd";
+import { Skeleton, Button } from "antd";
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import ChatBot from "../GenAIChatBot/ChatBot";
+import { AirbnbSmall, LogoMain } from "../../Icon/IconStorage";
 
 const HomePage = () => {
     const arrSymbol = [
@@ -144,6 +146,8 @@ const HomePage = () => {
         return () => clearTimeout(timer);
     }, [loading]);
 
+    const [open, setOpen] = useState(false); // Trạng thái mở/đóng ChatBot
+
     return (
         <>
             {loading ? (
@@ -179,6 +183,29 @@ const HomePage = () => {
                         <h2 className="text-3xl mt-16 font-semibold">
                             Trải nghiệm đã qua
                         </h2>
+                        {/* Ô chatbox dành cho component chatbot vừa tạo tôi muốn nằm hiển thị 1 phía bên phải trang */}
+                        <div
+                            style={{ position: "fixed", bottom: 80, right: 40 }}
+                        >
+                            {/* Nút mở ChatBot */}
+                            <Button
+                                className="text-white p-10 rounded-full bg-white w-20  h-20 animate-bounce"
+                                shape="circle"
+                                onClick={() => setOpen(!open)}
+                                style={{
+                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                                    animation: "bounce 2s infinite",
+                                }}
+                            >
+                                <AirbnbSmall width="2.3em" height="2.6em" />
+                            </Button>
+                            <ChatBot
+                                stateOpening={open}
+                                updateState={(value) => {
+                                    setOpen(value);
+                                }}
+                            />
+                        </div>
                         <div
                             className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
                                 isMobile && "px-7"

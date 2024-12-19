@@ -1,0 +1,35 @@
+{
+    "family": "frontend-task",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "1024",
+    "memory": "2048",
+    "executionRoleArn": "arn:aws:iam::171895670589:role/LabITGotTalentFor_ECS_ROLE",
+    "containerDefinitions": [
+        {
+            "name": "amazing-fe",
+            "image": "171895670589.dkr.ecr.ap-southeast-1.amazonaws.com/amazing-fe:latest",
+            "portMappings": [
+                {
+                    "containerPort": 5173,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "VITE_BASE_URL",
+                    "value": "http://booking-alb-1209022085.ap-southeast-1.elb.amazonaws.com/api"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/frontend-service",
+                    "awslogs-region": "ap-southeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ]
+}
